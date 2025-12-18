@@ -66,7 +66,6 @@
         /* The Canvas */
         #editor-canvas { 
             height: calc(100% - 50px); width: 100%; overflow-y: auto; background: white; padding-bottom: 50px;
-            /* Prevents sidebar from covering content */
             padding-right: var(--panel-width); 
         }
 
@@ -199,6 +198,12 @@
                                 <input type="text" id="inp-src" class="prop-input" oninput="applyChange('src')">
                             </div>
                             
+                            <!-- BACKGROUND IMAGE (New) -->
+                            <div class="prop-group" id="pg-bg-img">
+                                <label class="prop-label">Background Image URL</label>
+                                <input type="text" id="inp-bg-img" class="prop-input" oninput="applyChange('style-bg-img')">
+                            </div>
+                            
                             <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
                             
                             <!-- STYLES -->
@@ -213,6 +218,10 @@
                             <div class="prop-group">
                                 <label class="prop-label">Font Size (px, rem)</label>
                                 <input type="text" id="inp-size" class="prop-input" oninput="applyChange('style-size')">
+                            </div>
+                            <div class="prop-group">
+                                <label class="prop-label">Border Radius (px)</label>
+                                <input type="text" id="inp-radius" class="prop-input" oninput="applyChange('style-radius')">
                             </div>
                             <div class="prop-group">
                                 <label class="prop-label">Padding</label>
@@ -341,7 +350,10 @@
                     const response = await fetch('index.html');
                     const text = await response.text();
                     const parser = new DOMParser();
-                    htmlContent = parser.parseFromString(text, 'text/html').getElementById('main-content').innerHTML;
+                    // IMPORTANT: Only edit the main editable area
+                    const docParsed = parser.parseFromString(text, 'text/html');
+                    const mainContent = docParsed.getElementById('editable-content');
+                    htmlContent = mainContent ? mainContent.innerHTML : "<div>Error: Could not find editable content in index.html</div>";
                 }
             } catch(e) { htmlContent = "<div>Load Error</div>"; }
 
@@ -420,6 +432,17 @@
             document.getElementById('inp-size').value = style.fontSize;
             document.getElementById('inp-padding').value = style.padding;
             document.getElementById('inp-margin').value = style.margin;
+            document.getElementById('inp-radius').value = style.borderRadius;
+            
+            // Background Image extraction
+            let bgImg = style.backgroundImage;
+            if(bgImg && bgImg !== 'none') {
+                // Strip url("...") wrapper
+                bgImg = bgImg.replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
+                document.getElementById('inp-bg-img').value = bgImg;
+            } else {
+                document.getElementById('inp-bg-img').value = '';
+            }
         }
 
         // Expose to window for HTML oninput calls
@@ -435,6 +458,12 @@
             if(type === 'style-size') selectedEl.style.fontSize = document.getElementById('inp-size').value;
             if(type === 'style-padding') selectedEl.style.padding = document.getElementById('inp-padding').value;
             if(type === 'style-margin') selectedEl.style.margin = document.getElementById('inp-margin').value;
+            if(type === 'style-radius') selectedEl.style.borderRadius = document.getElementById('inp-radius').value;
+            
+            if(type === 'style-bg-img') {
+                const url = document.getElementById('inp-bg-img').value;
+                selectedEl.style.backgroundImage = url ? `url('${url}')` : 'none';
+            }
         }
 
         window.saveWebsiteChanges = async function() {
