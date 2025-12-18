@@ -240,11 +240,11 @@
     <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, setDoc, getDoc, serverTimestamp, signInAnonymously, getAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-        import { getAuth as getFirebaseAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
         // --- CONFIG ---
-        const LOGIN_PASSWORD = "ADMIN"; 
+        const LOGIN_PASSWORD = "admin"; 
         
         // Use environment config if available (Fix for "System Fucked" issue: connect to correct project)
         let firebaseConfig;
@@ -262,7 +262,7 @@
         }
         
         const app = initializeApp(firebaseConfig);
-        const auth = getFirebaseAuth(app);
+        const auth = getAuth(app);
         const db = getFirestore(app);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
 
