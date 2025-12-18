@@ -3,206 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - MG Cafe</title>
-    <!-- Tailwind CSS -->
+    <meta name="description" content="MG Cafe & Restro - Authentic Bihari Cuisine & Modern Vibes.">
+    <title>MG Cafe & Restro</title>
+    
+    <!-- Tailwind CSS (Modern Styling) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#d32f2f',
+                        secondary: '#388e3c',
+                        dark: '#1a1a1a',
+                        gold: '#ffb300',
+                    },
+                    fontFamily: {
+                        serif: ['Merriweather', 'serif'],
+                        sans: ['Open Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* Editor Highlight */
-        .editor-highlight { outline: 2px dashed #3b82f6 !important; cursor: pointer; }
-        .editor-selected { outline: 3px solid #ef4444 !important; z-index: 10; position: relative; }
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #999; }
+        /* Custom Animations */
+        .fade-in { animation: fadeIn 0.8s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Smooth Scroll */
+        html { scroll-behavior: smooth; }
+        
+        /* Loading Spinner */
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #d32f2f; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="bg-gray-100 h-screen overflow-hidden text-gray-800 font-sans">
+<body class="bg-white text-gray-800 font-sans antialiased pb-20 md:pb-0">
 
-    <!-- Login Overlay -->
-    <div id="loginOverlay" class="fixed inset-0 bg-gray-900 z-50 flex items-center justify-center">
-        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-sm text-center">
-            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="material-icons text-red-600 text-3xl">admin_panel_settings</i>
-            </div>
-            <h2 class="text-2xl font-bold mb-2">Admin Login</h2>
-            <p class="text-gray-500 mb-6 text-sm">Enter access code to manage website.</p>
-            <form id="loginForm" class="space-y-4">
-                <input type="password" id="passwordInput" class="w-full border p-3 rounded focus:outline-none focus:border-red-500 transition" placeholder="Password" required>
-                <button type="submit" class="w-full bg-red-600 text-white p-3 rounded font-bold hover:bg-red-700 transition">Access Dashboard</button>
-            </form>
-            <p id="loginError" class="text-red-500 text-sm mt-3 hidden">Access Denied: Incorrect Password</p>
-        </div>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-white z-[9999] flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="loader mb-4"></div>
+        <p class="text-gray-500 font-semibold tracking-wide">Swad-E-Bihar is loading...</p>
     </div>
 
-    <!-- Main Dashboard -->
-    <div id="dashboard" class="flex h-screen hidden">
+    <!-- MAIN EDITABLE CONTENT -->
+    <!-- This ID is crucial for the Admin Panel to target -->
+    <main id="editable-content" class="opacity-0 transition-opacity duration-700">
         
-        <!-- Sidebar -->
-        <div class="w-64 bg-white border-r flex-shrink-0 flex flex-col">
-            <div class="h-16 flex items-center px-6 border-b font-bold text-red-600 text-xl tracking-wide">
-                MG ADMIN
-            </div>
-            <nav class="flex-1 p-4 space-y-2">
-                <button onclick="switchView('reservations')" class="nav-item w-full flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-red-50 hover:text-red-600 transition active-nav" id="nav-res">
-                    <i class="material-icons mr-3">event_seat</i> Reservations
-                </button>
-                <button onclick="switchView('editor')" class="nav-item w-full flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-red-50 hover:text-red-600 transition" id="nav-edit">
-                    <i class="material-icons mr-3">edit_note</i> Website Editor
-                </button>
-            </nav>
-            <div class="p-4 border-t">
-                <button onclick="logout()" class="w-full flex items-center px-4 py-2 text-red-500 hover:bg-red-50 rounded transition">
-                    <i class="material-icons mr-3">logout</i> Logout
-                </button>
-            </div>
-        </div>
-
-        <!-- Content Area -->
-        <div class="flex-1 flex flex-col overflow-hidden relative">
-            
-            <!-- RESERVATIONS VIEW -->
-            <div id="view-reservations" class="view-panel flex-1 overflow-auto p-8 bg-gray-50">
-                <h1 class="text-2xl font-bold mb-6">Booking Requests</h1>
-                
-                <!-- Stats -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-red-500">
-                        <div class="text-gray-500 text-sm uppercase font-bold">Total Bookings</div>
-                        <div class="text-3xl font-bold mt-2" id="totalCount">0</div>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500">
-                        <div class="text-gray-500 text-sm uppercase font-bold">Today's Guests</div>
-                        <div class="text-3xl font-bold mt-2" id="todayCount">0</div>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
-                        <div class="text-gray-500 text-sm uppercase font-bold">Pending Actions</div>
-                        <div class="text-3xl font-bold mt-2" id="pendingCount">0</div>
+        <!-- Hero Section -->
+        <section class="relative h-screen min-h-[600px] flex items-center bg-cover bg-center bg-fixed" style="background-image: linear-gradient(to right, rgba(255,255,255,0.95), rgba(255,255,255,0.7)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-center md:text-left pt-16 md:pt-0">
+                    <span class="inline-block py-1 px-3 rounded-full bg-orange-100 text-orange-600 text-sm font-bold mb-4 tracking-wider">EST. 2024</span>
+                    <h1 class="text-5xl md:text-6xl font-serif font-black text-gray-900 leading-tight mb-4">
+                        MG CAFE <br> <span class="text-primary">& RESTRO</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-600 mb-8 font-serif italic">"Swad-E-Bihar"</p>
+                    <p class="text-gray-600 mb-8 leading-relaxed max-w-lg mx-auto md:mx-0">
+                        Experience the authentic taste of Champaran Meat House blended with a modern family cafe vibe. The pride of Danapur.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <a href="#booking-section" class="px-8 py-4 bg-primary text-white rounded-full font-bold shadow-lg hover:bg-red-700 hover:shadow-xl transform hover:-translate-y-1 transition duration-300 text-center">
+                            Book VIP Table
+                        </a>
+                        <a href="#menu-section" class="px-8 py-4 bg-white text-gray-800 border border-gray-200 rounded-full font-bold shadow hover:bg-gray-50 transition duration-300 text-center flex items-center justify-center gap-2">
+                            <i class="fas fa-utensils text-primary"></i> View Menu
+                        </a>
                     </div>
                 </div>
-
-                <!-- Table -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <table class="w-full">
-                        <thead class="bg-gray-100 border-b">
-                            <tr>
-                                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase">Status</th>
-                                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase">Guest Details</th>
-                                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase">Date & Time</th>
-                                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase">Requests</th>
-                                <th class="text-right py-3 px-4 text-xs font-semibold text-gray-600 uppercase">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bookingTableBody" class="divide-y divide-gray-100">
-                            <tr><td colspan="5" class="p-8 text-center text-gray-500">Loading bookings...</td></tr>
-                        </tbody>
-                    </table>
+                <div class="hidden md:block">
+                     <!-- High quality food image -->
+                     <img src="https://images.unsplash.com/photo-1543353071-873f17a7a088?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Delicious Food" class="rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition duration-500 border-4 border-white">
                 </div>
             </div>
+        </section>
 
-            <!-- EDITOR VIEW -->
-            <div id="view-editor" class="view-panel hidden flex-1 flex flex-col h-full">
-                <!-- Editor Toolbar -->
-                <div class="h-14 bg-gray-800 text-white flex items-center justify-between px-4 shadow-md z-20">
-                    <div class="flex items-center gap-4">
-                        <span class="text-sm font-medium bg-gray-700 px-3 py-1 rounded">Visual Mode</span>
-                        <span class="text-xs text-gray-400">Click elements to edit</span>
-                    </div>
-                    <button onclick="saveWebsiteChanges()" class="save-btn flex items-center gap-2 bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-sm font-bold transition">
-                        <i class="material-icons text-sm">save</i> Publish Live
-                    </button>
+        <!-- Menu Highlights -->
+        <section id="menu-section" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-serif font-bold text-gray-900 mb-4">Our Favorites</h2>
+                    <div class="w-24 h-1 bg-primary mx-auto"></div>
+                    <p class="mt-4 text-gray-600">Handpicked dishes that our customers love the most.</p>
                 </div>
 
-                <div class="flex-1 flex overflow-hidden relative">
-                    <!-- The Canvas (Page Preview) -->
-                    <div id="editor-canvas" class="flex-1 bg-white overflow-y-auto pb-20 shadow-inner">
-                        <div class="p-20 text-center text-gray-400">Loading Editor...</div>
-                    </div>
-
-                    <!-- Properties Panel -->
-                    <div id="properties-panel" class="w-80 bg-white border-l shadow-xl z-30 transform translate-x-full transition-transform duration-300 flex flex-col">
-                        <div class="p-4 border-b bg-gray-50 font-bold flex justify-between items-center">
-                            <span>Edit Element</span>
-                            <button onclick="deselectElement()" class="text-gray-400 hover:text-red-500"><i class="material-icons">close</i></button>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <!-- Item 1 -->
+                    <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden group">
+                        <div class="h-56 overflow-hidden relative">
+                            <span class="absolute top-4 left-4 bg-gold text-black text-xs font-bold px-3 py-1 rounded z-10">BESTSELLER</span>
+                            <img src="https://images.unsplash.com/photo-1606471191009-63994c53433b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
                         </div>
-                        <div class="p-4 flex-1 overflow-y-auto space-y-5">
-                            <div class="text-xs font-bold text-gray-400 uppercase">Content</div>
-                            
-                            <!-- Text Edit -->
-                            <div id="pg-text">
-                                <label class="block text-xs font-bold text-gray-600 mb-1">Text Content</label>
-                                <textarea id="inp-text" class="w-full border rounded p-2 text-sm h-24" oninput="applyChange('text')"></textarea>
+                        <div class="p-8">
+                            <div class="flex justify-between items-baseline mb-2">
+                                <h3 class="text-xl font-bold text-gray-800">Champaran Mutton</h3>
+                                <span class="text-2xl font-bold text-primary">₹250</span>
                             </div>
-                            
-                            <!-- Link Edit -->
-                            <div id="pg-link" class="hidden">
-                                <label class="block text-xs font-bold text-gray-600 mb-1">Link URL</label>
-                                <input type="text" id="inp-href" class="w-full border rounded p-2 text-sm" oninput="applyChange('href')">
-                            </div>
+                            <p class="text-gray-500 mb-6 text-sm">Slow-cooked in sealed earthen pots with whole garlic & secret spices.</p>
+                            <button class="w-full py-3 bg-green-100 text-green-700 font-bold rounded-xl hover:bg-green-600 hover:text-white transition duration-300 book-trigger">
+                                Reserve Order
+                            </button>
+                        </div>
+                    </div>
 
-                             <!-- Image Edit -->
-                             <div id="pg-img" class="hidden">
-                                <label class="block text-xs font-bold text-gray-600 mb-1">Image URL</label>
-                                <input type="text" id="inp-src" class="w-full border rounded p-2 text-sm" oninput="applyChange('src')">
+                    <!-- Item 2 -->
+                    <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden group">
+                        <div class="h-56 overflow-hidden relative">
+                            <span class="absolute top-4 left-4 bg-primary text-white text-xs font-bold px-3 py-1 rounded z-10">AUTHENTIC</span>
+                            <img src="https://media.istockphoto.com/id/1141088469/photo/litti-chokha-in-white-plate-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=wXWk5_c2pGzoI4dJ5FpQ29h5D1sQfC_qX_f_k_X_x_c=" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-8">
+                            <div class="flex justify-between items-baseline mb-2">
+                                <h3 class="text-xl font-bold text-gray-800">Litti Chokha</h3>
+                                <span class="text-2xl font-bold text-primary">₹120</span>
                             </div>
+                            <p class="text-gray-500 mb-6 text-sm">Traditional sattu litti dipped in pure desi ghee served with baigan chokha.</p>
+                            <button class="w-full py-3 bg-green-100 text-green-700 font-bold rounded-xl hover:bg-green-600 hover:text-white transition duration-300 book-trigger">
+                                Reserve Order
+                            </button>
+                        </div>
+                    </div>
 
-                            <div class="border-t pt-4"></div>
-                            <div class="text-xs font-bold text-gray-400 uppercase">Styling</div>
-
-                            <div>
-                                <label class="block text-xs font-bold text-gray-600 mb-1">Text Color</label>
-                                <div class="flex gap-2">
-                                    <input type="color" id="inp-color" class="h-8 w-8 cursor-pointer border rounded" oninput="applyChange('style-color')">
-                                    <input type="text" id="inp-color-text" class="flex-1 border rounded p-1 text-xs" readonly>
-                                </div>
+                    <!-- Item 3 -->
+                    <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden group">
+                        <div class="h-56 overflow-hidden relative">
+                            <span class="absolute top-4 left-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded z-10">SNACK</span>
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-8">
+                            <div class="flex justify-between items-baseline mb-2">
+                                <h3 class="text-xl font-bold text-gray-800">Crispy Burger</h3>
+                                <span class="text-2xl font-bold text-primary">₹149</span>
                             </div>
-                            
-                            <div>
-                                <label class="block text-xs font-bold text-gray-600 mb-1">Background Color</label>
-                                <div class="flex gap-2">
-                                    <input type="color" id="inp-bg" class="h-8 w-8 cursor-pointer border rounded" oninput="applyChange('style-bg')">
-                                    <input type="text" id="inp-bg-text" class="flex-1 border rounded p-1 text-xs" readonly>
-                                </div>
-                            </div>
-
-                             <div>
-                                <label class="block text-xs font-bold text-gray-600 mb-1">Font Size</label>
-                                <input type="text" id="inp-size" class="w-full border rounded p-2 text-sm" oninput="applyChange('style-size')">
-                            </div>
-                            
-                            <div>
-                                <label class="block text-xs font-bold text-gray-600 mb-1">Padding</label>
-                                <input type="text" id="inp-padding" class="w-full border rounded p-2 text-sm" oninput="applyChange('style-padding')">
-                            </div>
+                            <p class="text-gray-500 mb-6 text-sm">Juicy patty, fresh garden lettuce, melted cheese and cafe-style fries.</p>
+                            <button class="w-full py-3 bg-green-100 text-green-700 font-bold rounded-xl hover:bg-green-600 hover:text-white transition duration-300 book-trigger">
+                                Reserve Order
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
+        <!-- Feature Section -->
+        <section class="py-24 bg-dark text-white relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="flex flex-col md:flex-row items-center gap-16">
+                    <div class="w-full md:w-1/2">
+                        <div class="relative">
+                            <div class="absolute inset-0 border-4 border-gold transform translate-x-4 translate-y-4 rounded-lg"></div>
+                            <img src="https://images.unsplash.com/photo-1606471191009-63994c53433b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="relative rounded-lg shadow-2xl w-full">
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <h2 class="text-5xl font-serif font-bold text-gold mb-6">Ahuna Mutton Handi</h2>
+                        <h3 class="text-2xl font-light mb-8 text-gray-300">The Taste of Tradition.</h3>
+                        <p class="text-gray-400 text-lg leading-relaxed mb-8">
+                            Our chefs prepare this delicacy with patience and passion. Using secret spice blends from Champaran, sealed in clay pots to retain every ounce of flavor. It's not just food, it's an emotion.
+                        </p>
+                        <a href="#booking-section" class="inline-block px-8 py-3 border-2 border-gold text-gold font-bold rounded hover:bg-gold hover:text-black transition duration-300">
+                            Book Your Handi
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking Section -->
+        <section id="booking-section" class="py-24 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+            <div class="absolute inset-0 bg-black bg-opacity-70"></div>
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+                    <div class="p-10 md:p-14">
+                        <div class="text-center mb-10">
+                            <h2 class="text-3xl font-serif font-bold text-gray-800">Secure Your Table</h2>
+                            <p class="text-gray-500">Reserve your spot instantly online.</p>
+                        </div>
+
+                        <form id="bookingForm" class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Full Name</label>
+                                    <input type="text" id="name" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:bg-white transition" placeholder="Amit Kumar" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Phone Number</label>
+                                    <input type="tel" id="phone" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:bg-white transition" placeholder="9876543210" required>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Date</label>
+                                    <input type="date" id="date" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:bg-white transition" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Time</label>
+                                    <input type="time" id="time" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:bg-white transition" required>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Guests</label>
+                                    <select id="guests" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:bg-white transition">
+                                        <option value="2">2 People</option>
+                                        <option value="4">4 People</option>
+                                        <option value="6">6 People</option>
+                                        <option value="8">8 People</option>
+                                        <option value="10+">10+ (Group)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Seating</label>
+                                    <select id="seating" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:bg-white transition">
+                                        <option value="Indoor AC">Indoor AC Hall</option>
+                                        <option value="Rooftop">Rooftop (Open Air)</option>
+                                        <option value="Private Cabin">Private Family Cabin</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Special Requests</label>
+                                <textarea id="notes" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:bg-white transition" rows="2" placeholder="Birthday, Anniversary, Less Spicy..."></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 bg-primary text-white font-bold rounded-xl shadow-lg hover:bg-red-700 transform hover:-translate-y-1 transition duration-300">
+                                Confirm Reservation
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-dark text-white py-12 text-center">
+            <div class="container mx-auto px-6">
+                <h3 class="text-2xl font-serif font-bold mb-2">MG Cafe & Restro</h3>
+                <p class="text-gray-400 mb-8">Danapur, Patna, Bihar 801503</p>
+                <div class="flex justify-center gap-4 mb-8">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-primary transition"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-primary transition"><i class="fab fa-instagram"></i></a>
+                </div>
+                <p class="text-sm text-gray-600">&copy; 2025 Swad-E-Bihar. All Rights Reserved.</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 hidden backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 text-center transform transition-all scale-100 shadow-2xl">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check text-green-600 text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Booking Received!</h3>
+            <p class="text-gray-600 mb-6">
+                Thanks <span id="modalName" class="font-bold text-gray-800"></span>! We have received your request for <span id="modalDate" class="font-bold"></span>. We will call you to confirm.
+            </p>
+            <button onclick="document.getElementById('successModal').classList.add('hidden')" class="w-full py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition">
+                Okay, Great!
+            </button>
         </div>
     </div>
 
-    <!-- Default Template (Fallback if DB is empty) -->
-    <template id="default-template">
-        <section class="p-20 text-center bg-gray-50">
-            <h1 class="text-4xl font-bold mb-4">Welcome to Your New Website</h1>
-            <p class="mb-8">This is the default content. Click "Edit Website" to start customization.</p>
-            <button class="bg-red-600 text-white px-6 py-2 rounded">Example Button</button>
-        </section>
-    </template>
+    <!-- Mobile Sticky Bar -->
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t flex md:hidden z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <a href="tel:+911234567890" class="flex-1 py-4 text-center font-bold text-secondary border-r flex items-center justify-center gap-2">
+            <i class="fas fa-phone-alt"></i> Call
+        </a>
+        <a href="#booking-section" class="flex-1 py-4 text-center font-bold text-white bg-primary flex items-center justify-center gap-2">
+            <i class="fas fa-calendar-check"></i> Book Table
+        </a>
+    </div>
 
-    <!-- FIREBASE & ADMIN LOGIC -->
+    <!-- FIREBASE & LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot, doc, setDoc, getDoc, serverTimestamp, signInAnonymously, getAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc, signInAnonymously, getAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
         import { getAuth as getFirebaseAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
-        // CONFIG (Same fallback logic as index.html)
+        // --- FIREBASE CONFIGURATION ---
+        // We use the environment's config to ensure it works in this preview.
+        // For your local deployment, you can uncomment your specific keys below.
+        
         let firebaseConfig;
         if (typeof __firebase_config !== 'undefined') {
             firebaseConfig = JSON.parse(__firebase_config);
         } else {
+             // FALLBACK: User's provided keys (for local use)
              firebaseConfig = {
                 apiKey: "AIzaSyCdjr6GwvNtC-qqLhX7X0eOCZk54orEBto",
                 authDomain: "fir-711c2.firebaseapp.com",
@@ -217,242 +316,120 @@
         const auth = getFirebaseAuth(app);
         const db = getFirestore(app);
         
+        // Use App ID for path isolation (Security Best Practice)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
-        const LOGIN_PASSWORD = "admin"; // Still client-side (Weak Security)
 
-        // --- AUTH & INIT ---
-        const loginForm = document.getElementById('loginForm');
-        
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const pwd = document.getElementById('passwordInput').value;
-            
-            if (pwd === LOGIN_PASSWORD) {
-                try {
-                    // REAL Auth for Database Access
-                    await signInAnonymously(auth);
-                    
-                    document.getElementById('loginOverlay').classList.add('hidden');
-                    document.getElementById('dashboard').classList.remove('hidden');
-                    initDashboard();
-                } catch(err) {
-                    alert("System Error: Could not connect to database. " + err.message);
-                }
-            } else {
-                document.getElementById('loginError').classList.remove('hidden');
-            }
-        });
-
-        function logout() {
-            location.reload();
-        }
-
-        function initDashboard() {
-            loadReservations();
-            loadEditor();
-        }
-
-        // --- NAVIGATION ---
-        window.switchView = function(view) {
-            document.getElementById('view-reservations').classList.add('hidden');
-            document.getElementById('view-editor').classList.add('hidden');
-            document.getElementById('nav-res').classList.remove('bg-red-50', 'text-red-600');
-            document.getElementById('nav-edit').classList.remove('bg-red-50', 'text-red-600');
-
-            if (view === 'reservations') {
-                document.getElementById('view-reservations').classList.remove('hidden');
-                document.getElementById('nav-res').classList.add('bg-red-50', 'text-red-600');
-            } else {
-                document.getElementById('view-editor').classList.remove('hidden');
-                document.getElementById('nav-edit').classList.add('bg-red-50', 'text-red-600');
-            }
-        }
-
-        // --- RESERVATIONS ---
-        function loadReservations() {
-            // Path Rule: artifacts/{appId}/public/data/bookings
-            const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'bookings'), orderBy("timestamp", "desc"));
-            
-            onSnapshot(q, (snapshot) => {
-                const tbody = document.getElementById('bookingTableBody');
-                tbody.innerHTML = '';
+        // 1. Authenticate & Load Content
+        async function initApp() {
+            try {
+                // Must auth before DB access (Rule #3)
+                await signInAnonymously(auth);
+                console.log("Authenticated.");
                 
-                let total = 0, today = 0, pending = 0;
-                const todayStr = new Date().toISOString().split('T')[0];
-
-                if(snapshot.empty) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No bookings yet.</td></tr>`;
-                    return;
-                }
-
-                snapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    const id = docSnap.id;
-                    total++;
-                    if(data.date === todayStr) today++;
-                    if(data.status === 'Pending') pending++;
-
-                    const statusColors = {
-                        'Pending': 'bg-orange-100 text-orange-700',
-                        'Confirmed': 'bg-green-100 text-green-700'
-                    };
-                    const badgeClass = statusColors[data.status] || 'bg-gray-100 text-gray-700';
-
-                    const row = document.createElement('tr');
-                    row.className = 'hover:bg-gray-50 transition';
-                    row.innerHTML = `
-                        <td class="p-4"><span class="px-2 py-1 rounded text-xs font-bold ${badgeClass}">${data.status}</span></td>
-                        <td class="p-4">
-                            <div class="font-bold text-gray-800">${data.name}</div>
-                            <div class="text-sm text-gray-500">${data.phone}</div>
-                        </td>
-                        <td class="p-4 text-sm text-gray-600">${data.date}<br>${data.time}</td>
-                        <td class="p-4 text-sm text-gray-600 max-w-xs truncate">${data.notes || '-'} (${data.guests} ppl, ${data.seating})</td>
-                        <td class="p-4 text-right">
-                            ${data.status === 'Pending' ? 
-                                `<button onclick="confirmBooking('${id}')" class="text-green-600 hover:text-green-800 font-bold text-sm">Confirm</button>` : 
-                                `<span class="text-green-600 material-icons text-sm">check_circle</span>`}
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                document.getElementById('totalCount').innerText = total;
-                document.getElementById('todayCount').innerText = today;
-                document.getElementById('pendingCount').innerText = pending;
-            }, (error) => {
-                console.error("Data Load Error:", error);
-            });
+                await loadDynamicContent();
+            } catch(e) {
+                console.error("Auth failed:", e);
+                // Even if auth fails, show the default static content
+                showContent();
+            }
         }
 
-        window.confirmBooking = async (id) => {
+        async function loadDynamicContent() {
             try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'bookings', id), { status: 'Confirmed' }, { merge: true });
-            } catch(e) { alert("Error updating: " + e.message); }
-        };
-
-        // --- EDITOR LOGIC ---
-        let selectedEl = null;
-
-        async function loadEditor() {
-            const canvas = document.getElementById('editor-canvas');
-            
-            try {
-                // Fetch LIVE content
+                // Path Rule #1: Use public/data
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'site_content', 'live_page');
                 const docSnap = await getDoc(docRef);
 
-                if(docSnap.exists() && docSnap.data().html) {
-                    // Inject HTML into editor
-                    canvas.innerHTML = docSnap.data().html;
+                if (docSnap.exists() && docSnap.data().html) {
+                    console.log("Loading live content from Firebase...");
+                    document.getElementById('editable-content').innerHTML = docSnap.data().html;
                 } else {
-                    // Fallback to Template if no data
-                    const tpl = document.getElementById('default-template').innerHTML;
-                    canvas.innerHTML = tpl;
+                    console.log("Using default local content.");
                 }
-            } catch(e) {
-                canvas.innerHTML = `<div class="p-10 text-red-500">Error loading content: ${e.message}</div>`;
+            } catch (e) {
+                console.warn("Could not load dynamic content (likely offline or first run):", e);
+            } finally {
+                showContent();
             }
-
-            // Bind Editor Interactions
-            canvas.addEventListener('mouseover', (e) => {
-                e.stopPropagation();
-                if(e.target !== selectedEl && e.target !== canvas) {
-                    e.target.classList.add('editor-highlight');
-                }
-            });
-            canvas.addEventListener('mouseout', (e) => {
-                e.stopPropagation();
-                e.target.classList.remove('editor-highlight');
-            });
-            canvas.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if(e.target !== canvas) selectElement(e.target);
-            });
+        }
+        
+        function showContent() {
+            const screen = document.getElementById('loading-screen');
+            const content = document.getElementById('editable-content');
+            
+            screen.style.opacity = '0';
+            setTimeout(() => {
+                screen.style.display = 'none';
+                content.classList.remove('opacity-0');
+                bindEvents(); // Re-bind events to new content
+            }, 500);
         }
 
-        function selectElement(el) {
-            // Cleanup previous
-            if(selectedEl) selectedEl.classList.remove('editor-selected');
-            
-            selectedEl = el;
-            selectedEl.classList.add('editor-selected');
-            selectedEl.classList.remove('editor-highlight');
-            
-            // Show Panel
-            document.getElementById('properties-panel').classList.remove('translate-x-full');
-            
-            // Populate Fields
-            document.getElementById('inp-text').value = el.innerText;
-            
-            // Show/Hide Types
-            const isImg = el.tagName === 'IMG';
-            const isLink = el.tagName === 'A' || el.closest('a');
-            
-            document.getElementById('pg-img').classList.toggle('hidden', !isImg);
-            document.getElementById('pg-text').classList.toggle('hidden', isImg); // Don't edit text of img
-            document.getElementById('pg-link').classList.toggle('hidden', !isLink);
-
-            if(isImg) document.getElementById('inp-src').value = el.src;
-            if(isLink) document.getElementById('inp-href').value = el.getAttribute('href') || '#';
-            
-            // Styles
-            const s = window.getComputedStyle(el);
-            const rgbToHex = (rgb) => {
-                const res = rgb.match(/\d+/g);
-                return res ? "#" + res.map(x => (+x).toString(16).padStart(2,'0')).join('') : '#000000';
-            };
-            
-            document.getElementById('inp-color').value = rgbToHex(s.color);
-            document.getElementById('inp-bg').value = rgbToHex(s.backgroundColor);
-            document.getElementById('inp-size').value = s.fontSize;
-            document.getElementById('inp-padding').value = s.padding;
-        }
-
-        window.deselectElement = function() {
-            if(selectedEl) selectedEl.classList.remove('editor-selected');
-            selectedEl = null;
-            document.getElementById('properties-panel').classList.add('translate-x-full');
-        }
-
-        window.applyChange = function(type) {
-            if(!selectedEl) return;
-            
-            const val = (id) => document.getElementById(id).value;
-            
-            if(type === 'text') selectedEl.innerText = val('inp-text');
-            if(type === 'href') selectedEl.setAttribute('href', val('inp-href'));
-            if(type === 'src') selectedEl.src = val('inp-src');
-            
-            if(type === 'style-color') selectedEl.style.color = val('inp-color');
-            if(type === 'style-bg') selectedEl.style.backgroundColor = val('inp-bg');
-            if(type === 'style-size') selectedEl.style.fontSize = val('inp-size');
-            if(type === 'style-padding') selectedEl.style.padding = val('inp-padding');
-        }
-
-        window.saveWebsiteChanges = async function() {
-            const btn = document.querySelector('.save-btn');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = 'Saving...';
-            
-            // Remove editor classes before saving
-            if(selectedEl) selectedEl.classList.remove('editor-selected');
-            document.querySelectorAll('.editor-highlight').forEach(el => el.classList.remove('editor-highlight'));
-            
-            const cleanHTML = document.getElementById('editor-canvas').innerHTML;
-            
-            try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'site_content', 'live_page'), {
-                    html: cleanHTML,
-                    updatedAt: serverTimestamp()
+        function bindEvents() {
+            // "Book This" Scroll
+            document.querySelectorAll('.book-trigger').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('booking-section').scrollIntoView({behavior: 'smooth'});
                 });
-                alert("Published Successfully! The live site is updated.");
-            } catch(e) {
-                alert("Error saving: " + e.message);
+            });
+
+            // Form Submit
+            const form = document.getElementById('bookingForm');
+            if(form) {
+                // Clone to remove old listeners
+                const newForm = form.cloneNode(true);
+                form.parentNode.replaceChild(newForm, form);
+                newForm.addEventListener('submit', handleFormSubmit);
             }
-            btn.innerHTML = originalHTML;
         }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            
+            // Visual Feedback
+            btn.innerText = "Booking...";
+            btn.disabled = true;
+            btn.classList.add('opacity-75');
+
+            const name = document.getElementById('name').value;
+            const date = document.getElementById('date').value;
+            const guests = document.getElementById('guests').value;
+
+            try {
+                // Path Rule #1: Use public/data for bookings
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'bookings'), {
+                    name: name,
+                    phone: document.getElementById('phone').value,
+                    date: date,
+                    time: document.getElementById('time').value,
+                    guests: guests,
+                    seating: document.getElementById('seating').value,
+                    notes: document.getElementById('notes').value,
+                    status: 'Pending',
+                    timestamp: serverTimestamp()
+                });
+
+                // Success UI
+                document.getElementById('modalName').innerText = name;
+                document.getElementById('modalDate').innerText = date;
+                document.getElementById('successModal').classList.remove('hidden');
+                e.target.reset();
+
+            } catch (error) {
+                console.error("Booking error:", error);
+                alert("Could not connect to server. Please try again.");
+            }
+
+            btn.innerText = originalText;
+            btn.disabled = false;
+            btn.classList.remove('opacity-75');
+        }
+
+        // Start
+        initApp();
     </script>
 </body>
 </html>
