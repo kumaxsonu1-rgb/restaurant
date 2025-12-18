@@ -149,13 +149,12 @@
                                     <th>Status</th>
                                     <th>Guest</th>
                                     <th>Details</th>
-                                    <th>Seating</th>
                                     <th>Requests</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="bookingTableBody">
-                                <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
+                                <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -249,15 +248,15 @@
         // --- CONFIG ---
         const LOGIN_PASSWORD = "admin"; 
         
-        // TODO: PASTE YOUR FIREBASE CONFIG HERE
+        // PASTE YOUR FIREBASE CONFIG HERE
         const firebaseConfig = {
-  apiKey: "AIzaSyCdjr6GwvNtC-qqLhX7X0eOCZk54orEBto",
-  authDomain: "fir-711c2.firebaseapp.com",
-  projectId: "fir-711c2",
-  storageBucket: "fir-711c2.firebasestorage.app",
-  messagingSenderId: "212609923784",
-  appId: "1:212609923784:web:43c274cea203256e2943fd",
-  measurementId: "G-2FGBRS9W4X"
+            apiKey: "AIzaSyCdjr6GwvNtC-qqLhX7X0eOCZk54orEBto",
+            authDomain: "fir-711c2.firebaseapp.com",
+            projectId: "fir-711c2",
+            storageBucket: "fir-711c2.firebasestorage.app",
+            messagingSenderId: "212609923784",
+            appId: "1:212609923784:web:43c274cea203256e2943fd",
+            measurementId: "G-2FGBRS9W4X"
         };
         // --- END CONFIG ---
 
@@ -321,7 +320,6 @@
                         <td><span class="badge badge-${data.status}">${data.status}</span></td>
                         <td><strong>${data.name}</strong><br><small>${data.phone}</small></td>
                         <td>${data.date}<br>${data.time}</td>
-                        <td>${data.guests} Ppl<br><small>${data.seating}</small></td>
                         <td><small>${data.notes || '-'}</small></td>
                         <td>${data.status === 'Pending' ? `<button onclick="confirmBk('${docSnapshot.id}')" style="color:green;cursor:pointer;">Confirm</button>` : '✓'}</td>
                     `;
