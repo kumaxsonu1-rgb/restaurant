@@ -3,799 +3,422 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Experience the authentic Swad-E-Bihar at MG Cafe & Restro. Best food in Danapur.">
+    <meta name="description" content="MG Cafe & Restro - Authentic Bihari Cuisine & Modern Vibes. Book your table now.">
     <title>MG Cafe & Restro - Swad-E-Bihar</title>
     
-    <!-- External Libraries for Fonts and Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&family=Raleway:wght@300;400;500;700&family=Roboto+Slab:wght@100;400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
-        /* --- 1. Variables & Global Reset --- */
         :root {
-            --primary-color: #e84f4f; /* Main Red - Appetite Stimulating */
-            --primary-hover: #d40101;
-            --secondary-color: #28b351; /* Green for Actions/Safety */
-            --secondary-hover: #24a94b;
-            --dark-bg: #1a1a1a; /* Darker for better contrast */
-            --light-bg: #f8f9fa;
-            --text-main: #333333;
-            --text-light: #ffffff;
-            --font-heading: 'Merriweather', serif;
-            --font-body: 'Open Sans', sans-serif;
-            --shadow-card: 0 10px 30px rgba(0,0,0,0.08); /* Softer, modern shadow */
-            --transition-speed: 0.3s;
-            --gold-accent: #ffc107;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            font-family: var(--font-body);
-            color: var(--text-main);
-            line-height: 1.6;
-            background-color: #fff;
-            padding-bottom: 60px; /* Space for mobile sticky bar */
-        }
-
-        @media (min-width: 768px) {
-            body { padding-bottom: 0; }
-        }
-
-        /* --- 2. Layout & Grid System --- */
-        .gjs-ft-section {
-            padding: 60px 0; /* More breathing room */
-            position: relative;
-        }
-
-        .gjs-ft-wrapper {
-            width: 100%;
-            max-width: 1140px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        .gjs-ft-row {
-            display: flex;
-            flex-wrap: wrap;
-            margin: 0 -15px;
-        }
-
-        .gjs-ft-column {
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .img-fluid {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
-
-        /* --- 3. Typography --- */
-        .ftheadline {
-            font-family: var(--font-heading);
-            font-weight: 900;
-            margin-bottom: 15px;
-            line-height: 1.2;
-            color: inherit;
-        }
-
-        .ftsub_heading {
-            font-family: var(--font-body);
-            font-weight: 400;
-            font-size: 1.25rem;
-            margin-bottom: 25px;
-            opacity: 0.9;
-        }
-
-        .ftparagraph {
-            font-family: var(--font-body);
-            margin-bottom: 20px;
-            font-size: 1.05rem;
-            color: #555;
-        }
-
-        /* --- 4. Component Styles --- */
-        
-        /* Buttons - Optimized for Clicks */
-        .gjs-btn, .ft-form-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            background-color: var(--primary-color);
-            color: #fff;
-            padding: 14px 35px;
-            border-radius: 50px; /* Modern pill shape */
-            text-decoration: none;
-            font-weight: 700;
-            transition: all var(--transition-speed);
-            border: none;
-            cursor: pointer;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(232, 79, 79, 0.4);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .gjs-btn:hover, .ft-form-btn:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(232, 79, 79, 0.6);
-            color: #fff;
-        }
-
-        /* Pulse Animation for CTA */
-        @keyframes pulse-red {
-            0% { box-shadow: 0 0 0 0 rgba(232, 79, 79, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(232, 79, 79, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(232, 79, 79, 0); }
-        }
-
-        .cta-pulse {
-            animation: pulse-red 2s infinite;
-        }
-
-        .ffbtnsubtxt {
-            display: block;
-            font-size: 0.75em;
-            font-weight: 400;
-            opacity: 0.95;
-            margin-top: 2px;
-            text-transform: none;
-            background: rgba(0,0,0,0.1);
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-
-        /* Specific Button Colors */
-        #i06ebi { background-color: var(--primary-color); }
-        #iin5gl, #imqkpv, #iptcjo { background-color: var(--secondary-color); box-shadow: 0 4px 15px rgba(40, 179, 81, 0.4); }
-        #iin5gl:hover, #imqkpv:hover, #iptcjo:hover { background-color: var(--secondary-hover); }
-
-        /* Icons */
-        .ft-icon {
-            font-size: 24px;
-            color: var(--primary-color);
-            padding: 8px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .ft_com_box {
-            text-align: center;
+            --primary: #d32f2f;
+            --secondary: #388e3c;
+            --dark: #212121;
+            --light: #fff3e0;
+            --gold: #ffb300;
+            --facebook: #1877F2;
         }
         
-        /* Menu Item Cards - Optimized Layout */
-        .menu-item-card {
-            background: #fff;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: var(--shadow-card);
-            transition: transform var(--transition-speed);
-            height: 100%;
-            position: relative;
-            border: 1px solid rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-        }
-        .menu-item-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--primary-color);
-        }
-
-        .bestseller-badge {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: var(--gold-accent);
-            color: #000;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 4px;
-            z-index: 2;
-        }
-
-        /* --- 5. Section Specifics --- */
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Open Sans', sans-serif; color: #333; line-height: 1.6; padding-bottom: 60px; }
+        h1, h2, h3 { font-family: 'Merriweather', serif; }
+        
+        /* Layout */
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 15px; }
+        .row { display: flex; flex-wrap: wrap; margin: 0 -15px; }
+        .col { padding: 15px; flex: 1; min-width: 300px; display: flex; flex-direction: column; justify-content: center; }
+        .img-fluid { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+        
+        /* Editable Sections Wrapper */
+        .gjs-ft-section { padding: 80px 0; position: relative; }
 
         /* Hero Section */
-        #icdecp {
-            background-image: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.75)), url('https://img.flexifunnels.io/images/163/a2nzg_1920_banner.png');
+        #hero-section {
+            background: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.85)), url('https://img.flexifunnels.io/images/163/a2nzg_1920_banner.png');
             background-size: cover;
             background-position: center;
-            padding: 100px 0 80px;
         }
+        .hero-title { font-size: 3rem; color: #222; margin-bottom: 20px; font-weight: 900; line-height: 1.2; }
+        .hero-title span { color: var(--primary); }
+        .hero-subtitle { font-size: 1.3rem; margin-bottom: 30px; color: #444; }
 
-        #icdecp .ftheadline {
-            font-size: 3rem;
-            color: #111;
-            text-align: left;
-            margin-bottom: 20px;
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: var(--primary); color: #fff; padding: 14px 35px; border-radius: 50px;
+            text-decoration: none; font-weight: 700; text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4); transition: 0.3s; border: none; cursor: pointer;
         }
+        .btn:hover { transform: translateY(-3px); background: #b71c1c; color: #fff; }
+        .btn-green { background: var(--secondary); box-shadow: 0 4px 15px rgba(56, 142, 60, 0.4); }
+        .btn-green:hover { background: #2e7d32; }
         
-        #icdecp .ftsub_heading {
-            text-align: left;
-            color: #444;
-            font-size: 1.4rem;
+        /* Menu Cards */
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
+        .menu-card {
+            background: #fff; border-radius: 15px; padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; transition: 0.3s;
+            position: relative; border: 1px solid #eee; display: flex; flex-direction: column;
         }
+        .menu-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        .menu-img { height: 160px; object-fit: contain; margin-bottom: 15px; }
+        .price { font-size: 1.5rem; font-weight: 900; color: var(--primary); margin-top: auto; }
+        .badge { position: absolute; top: 15px; left: 15px; background: var(--gold); color: #000; padding: 5px 10px; border-radius: 4px; font-weight: bold; font-size: 12px; }
 
         /* Dark Sections */
-        #izlvmb, #ij94xi {
-            background-color: var(--dark-bg);
-            color: var(--text-light);
+        .bg-dark { background-color: var(--dark); color: #fff; }
+        .bg-dark h1, .bg-dark h2 { color: var(--gold); }
+        .bg-dark p { color: rgba(255,255,255,0.8); }
+
+        /* Reservation Section */
+        #booking-section {
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://img.flexifunnels.io/images/163/cyntc_1920_bg.png');
+            background-size: cover; background-position: center; color: #fff;
+        }
+        .reservation-box {
+            background: #fff; padding: 40px; border-radius: 15px; color: #333;
+            max-width: 700px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
         
-        #izlvmb .ftheadline, #ij94xi .ftheadline {
-            color: var(--gold-accent); /* Gold text for premium feel on dark bg */
-            text-align: left;
+        /* Form Styles */
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-label { font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; display: block; color: #555; }
+        .form-control {
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; background: #f9f9f9; transition: 0.3s;
         }
+        .form-control:focus { outline: none; border-color: var(--secondary); background: #fff; box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.1); }
+        .form-row { display: flex; gap: 20px; }
+        .form-row .form-group { flex: 1; }
+        @media (max-width: 600px) { .form-row { flex-direction: column; gap: 0; } }
+
+        /* Footer */
+        footer { background: var(--dark); color: #fff; padding: 50px 0; text-align: center; }
         
-        #izlvmb .ftparagraph, #ij94xi .ftparagraph {
-            color: rgba(255,255,255,0.8);
-            text-align: left;
+        /* Mobile Stickies */
+        .mobile-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: #fff;
+            display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000;
         }
+        .mobile-btn { flex: 1; padding: 15px; text-align: center; text-decoration: none; font-weight: bold; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .mb-call { background: var(--secondary); }
+        .mb-book { background: var(--primary); }
+        @media(min-width: 768px) { .mobile-bar { display: none; } }
 
-        #izlvmb .ftsub_heading, #ij94xi .ftsub_heading {
-            color: #fff;
-            text-align: left;
+        /* Modal */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px);
         }
-
-        /* Footer / Form Section */
-        #ib8r3j {
-            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://img.flexifunnels.io/images/163/cyntc_1920_bg.png');
-            background-size: cover;
-            color: #fff;
-            padding: 80px 0;
-        }
-
-        #ihncul {
-            background: #fff;
-            border-radius: 15px;
-            padding: 40px;
-            color: #333;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            position: relative;
-        }
-
-        /* Urgency Badge */
-        .urgency-badge {
-            background: #ffecb3;
-            color: #856404;
-            border: 1px solid #ffeeba;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .urgency-dot {
-            height: 10px;
-            width: 10px;
-            background-color: #dc3545;
-            border-radius: 50%;
-            display: inline-block;
-            animation: blink 1.5s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0.4; } }
-
-        /* Form Styling */
-        .flexi-form {
-            width: 100%;
-        }
-
-        .ft-input-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .ft-form-ctl {
-            width: 100%;
-            padding: 15px 15px;
-            border: 1px solid #eee;
-            background: #f9f9f9;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .ft-form-ctl:focus {
-            border-color: var(--secondary-color);
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(40, 179, 81, 0.1);
-            outline: none;
-        }
-
-        /* Mobile Sticky Action Bar */
-        .mobile-sticky-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #fff;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 999;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-        }
-        
-        .mobile-sticky-btn {
-            flex: 1;
-            margin: 0 5px;
-            padding: 12px;
-            text-align: center;
-            border-radius: 5px;
-            font-weight: 700;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .ms-call { background: var(--secondary-color); color: #fff; }
-        .ms-book { background: var(--primary-color); color: #fff; }
-
-        @media (min-width: 768px) {
-            .mobile-sticky-bar { display: none; }
-        }
-
-        /* --- 6. Modal Styles --- */
-        .ff-modal-popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85); /* Darker overlay for focus */
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        .ff-modal-popup.show {
-            display: flex;
-            opacity: 1;
-        }
-
-        .ff-modal-content {
-            background: #fff;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 450px;
-            position: relative;
-            animation: slideDown 0.4s ease;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .ff-modal-pop-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: #999;
-            transition: color 0.3s;
-        }
-        .ff-modal-pop-close:hover { color: #333; }
-
-        /* Social Icons */
-        .ft-social {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            margin: 0 5px;
-            font-size: 18px;
-            transition: 0.3s;
-        }
-        .ft-social:hover {
-            background: #fff;
-            color: var(--primary-color);
-            transform: scale(1.1);
-        }
-
-        /* --- 7. Responsiveness --- */
-        @media (min-width: 768px) {
-            #imbges { flex-basis: 60%; }
-            #id0hii { flex-basis: 40%; }
-            #ib8ulr, #i2w8jj, #i0cdgs, #i5gii3 { flex-basis: 45%; }
-            #i8wpxa, #isc06u, #ifgy5h, #i1luxf { flex-basis: 55%; }
-            #it3l61 { flex: 1.8; padding-right: 40px; }
-            #iu3fzi { flex: 1.2; }
-            #ihncul { flex: 1.6; margin-right: 30px; }
-            #inbacj { flex: 1; }
-        }
-
-        @media (max-width: 767px) {
-            .gjs-ft-column { flex-basis: 100% !important; text-align: center; }
-            .ftheadline { font-size: 2rem !important; text-align: center !important; }
-            .ftsub_heading, .ftparagraph { text-align: center !important; }
-            #icdecp .ftheadline, #icdecp .ftsub_heading { text-align: center; }
-            #i06ebi { width: 100%; margin-top: 15px; }
-            #icdecp { padding: 40px 0; }
-            .menu-item-card { margin-bottom: 20px; }
-            
-            /* Fix reverse flex for mobile visual flow */
-            #ij94xi .gjs-ft-row { flex-direction: column-reverse !important; }
-            #izlvmb .gjs-ft-row { flex-direction: column-reverse !important; }
-        }
+        .modal.active { display: flex; }
+        .modal-content { background: #fff; padding: 30px; border-radius: 15px; width: 90%; max-width: 450px; text-align: center; position: relative; }
     </style>
 </head>
 <body>
 
-    <!-- Sticky Mobile Action Bar -->
-    <div class="mobile-sticky-bar">
-        <a href="tel:001234567890" class="mobile-sticky-btn ms-call">
-            <i class="material-icons" style="font-size: 18px;">call</i> Call
-        </a>
-        <a href="javascript:void(0)" onclick="openModal()" class="mobile-sticky-btn ms-book">
-            <i class="material-icons" style="font-size: 18px;">restaurant_menu</i> Book Table
-        </a>
-    </div>
-
-    <!-- Hero Section -->
-    <section id="icdecp" class="gjs-ft-section">
-        <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
-            <div class="gjs-ft-row">
-                <!-- Left Content -->
-                <div id="it3l61" class="gjs-ft-column">
-                    <div class="ft_com_box" style="text-align: left;">
-                        <img src="https://img.flexifunnels.io/images/163/i5ntg_139_logo1.png" alt="Logo" class="img-fluid" style="max-height: 70px; margin: 0;"/>
+    <!-- Main Content Wrapper (This is what gets replaced by Firebase content) -->
+    <div id="main-content">
+        <!-- Hero -->
+        <section id="hero-section" class="gjs-ft-section">
+            <div class="container">
+                <div class="row" style="align-items: center;">
+                    <div class="col">
+                        <img src="https://img.flexifunnels.io/images/163/i5ntg_139_logo1.png" style="height: 80px; margin-bottom: 20px; align-self: flex-start;">
+                        <h1 class="hero-title">MG CAFE & RESTRO <br><span>SWAD-E-BIHAR</span></h1>
+                        <p class="hero-subtitle">Authentic Champaran Meat House & Modern Family Cafe. The pride of Danapur.</p>
+                        <div style="display: flex; gap: 15px;">
+                            <a href="#booking-section" class="btn">Book VIP Table</a>
+                            <a href="tel:+911234567890" class="btn btn-green"><i class="fas fa-phone-alt" style="margin-right: 8px;"></i> Call Now</a>
+                        </div>
                     </div>
-                    <h1 class="ftheadline" style="margin-top: 30px;">MG CAFE & RESTRO <br/><span style="color: var(--primary-color);">SWAD-E-BIHAR</span></h1>
-                    <h2 class="ftsub_heading">From Authentic Litti Chokha to Chinese Delights. The Taste of Bihar in Danapur.</h2>
-                    
-                    <div class="gjs-ft-row" style="align-items: center; margin-top: 20px;">
-                        <div id="imbges" class="gjs-ft-column">
-                            <a href="javascript:void(0)" onclick="openModal()" class="gjs-btn cta-pulse" id="i06ebi">
-                                <span class="ffbtnmaintxt">Order Now</span>
-                                <span class="ffbtnsubtxt">Flat 25% Off Today</span>
-                            </a>
-                        </div>
-                        <div id="id0hii" class="gjs-ft-column">
-                            <h2 class="ftsub_heading" style="margin: 0; font-weight: 700;">
-                                Call For VIP Booking <br/> <a href="tel:001234567890" style="color: var(--primary-color); text-decoration: none;">00 1234 567890</a>
-                            </h2>
-                        </div>
+                    <div class="col">
+                        <img src="https://img.flexifunnels.io/images/163/q5odg_564_image1.png" class="img-fluid" style="filter: drop-shadow(0 15px 15px rgba(0,0,0,0.3)); transform: scale(1.05);">
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Menu Preview -->
+        <section id="menu-section" class="gjs-ft-section">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 10px;">Our Favorites</h2>
+                <p style="text-align: center; color: #666;">A perfect blend of Desi flavors and Cafe delights.</p>
                 
-                <!-- Right Content (Image & Call) -->
-                <div id="iu3fzi" class="gjs-ft-column">
-                    <div class="gjs-ft-row" style="justify-content: flex-end; margin-bottom: 20px; display: none;">
-                        <!-- Hidden on desktop to clean UI, relied on bottom/top contact -->
-                        <a href="#" class="gjs-btn" style="background-color: var(--secondary-color); padding: 8px 20px;">
-                            <i class="material-icons" style="vertical-align: middle; font-size: 18px;">call</i> CALL NOW
-                        </a>
+                <div class="menu-grid">
+                    <!-- Item 1 -->
+                    <div class="menu-card">
+                        <span class="badge">SIGNATURE</span>
+                        <img src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" class="menu-img">
+                        <h3>Champaran Mutton</h3>
+                        <p>Slow-cooked in sealed earthen pots with whole garlic & spices.</p>
+                        <div class="price">₹250</div>
+                        <button class="btn btn-green" style="margin-top: 15px;" onclick="scrollToBook()">Book This</button>
                     </div>
-                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/q5odg_564_image1.png" alt="Delicious Food" class="img-fluid" style="filter: drop-shadow(0 15px 15px rgba(0,0,0,0.2)); transform: scale(1.05);"/>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Intro Section -->
-    <section id="i6jy68" class="gjs-ft-section" style="background-color: var(--light-bg);">
-        <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
-            <div class="gjs-ft-row">
-                <div class="gjs-ft-column" style="text-align: center;">
-                    <h1 class="ftheadline">Serving Danapur for Years!</h1>
-                    <h2 class="ftsub_heading" style="max-width: 700px; margin: 0 auto;">We don't just serve food; we serve the memories of Bihar. Prepared by expert chefs using authentic spices.</h2>
-                </div>
-            </div>
-
-            <!-- Food Grid Row 1 -->
-            <div class="gjs-ft-row" style="margin-top: 50px;">
-                <!-- Item 1 -->
-                <div class="gjs-ft-column" style="flex: 1;">
-                     <div class="menu-item-card">
-                        <span class="bestseller-badge">MUST TRY</span>
-                        <img loading="lazy" src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" alt="Champaran Mutton" class="img-fluid" style="height: 160px; object-fit: contain; margin-bottom: 15px;"/>
-                        <h3 class="ftheadline" style="font-size: 22px; margin-top: 10px; margin-bottom: 5px;">Champaran Mutton</h3>
-                        <img src="https://img.flexifunnels.io/images/163/k2nzy_82_star.png" alt="5 Stars" class="img-fluid" style="height: 18px; margin: 0 auto 15px 0;"/>
-                        
-                        <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 15px;">
-                            <div>
-                                <h4 style="margin:0; font-size: 24px; font-weight: 900; color: var(--primary-color);">₹250</h4>
-                            </div>
-                            <button onclick="openModal()" style="border: none; background: transparent; cursor: pointer;">
-                                <i class="fa fa-shopping-cart ft-icon" style="color: #fff; background: var(--primary-color);"></i>
-                            </button>
-                        </div>
+                    <!-- Item 2 -->
+                    <div class="menu-card">
+                        <span class="badge" style="background: var(--primary); color: #fff;">AUTHENTIC</span>
+                        <img src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" class="menu-img">
+                        <h3>Special Litti Chokha</h3>
+                        <p>Traditional sattu litti dipped in pure desi ghee with baigan chokha.</p>
+                        <div class="price">₹120</div>
+                        <button class="btn btn-green" style="margin-top: 15px;" onclick="scrollToBook()">Book This</button>
                     </div>
-                </div>
-
-                <!-- Item 2 -->
-                <div class="gjs-ft-column" style="flex: 1;">
-                    <div class="menu-item-card">
-                       <span class="bestseller-badge" style="background: var(--primary-color); color: #fff;">POPULAR</span>
-                       <img loading="lazy" src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" alt="Chicken Lollipop" class="img-fluid" style="height: 160px; object-fit: contain; margin-bottom: 15px;"/>
-                       <h3 class="ftheadline" style="font-size: 22px; margin-top: 10px; margin-bottom: 5px;">Chicken Lollipop</h3>
-                       <img src="https://img.flexifunnels.io/images/163/k2nzy_82_star.png" alt="5 Stars" class="img-fluid" style="height: 18px; margin: 0 auto 15px 0;"/>
-                       
-                       <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 15px;">
-                           <div>
-                               <h4 style="margin:0; font-size: 24px; font-weight: 900; color: var(--primary-color);">₹180</h4>
-                           </div>
-                           <button onclick="openModal()" style="border: none; background: transparent; cursor: pointer;">
-                                <i class="fa fa-shopping-cart ft-icon" style="color: #fff; background: var(--primary-color);"></i>
-                            </button>
-                       </div>
-                   </div>
-               </div>
-
-               <!-- Item 3 -->
-               <div class="gjs-ft-column" style="flex: 1;">
-                    <div class="menu-item-card">
-                        <img loading="lazy" src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" alt="Special Litti Chokha" class="img-fluid" style="height: 160px; object-fit: contain; margin-bottom: 15px;"/>
-                        <h3 class="ftheadline" style="font-size: 22px; margin-top: 10px; margin-bottom: 5px;">Special Litti Chokha</h3>
-                        <img src="https://img.flexifunnels.io/images/163/k2nzy_82_star.png" alt="5 Stars" class="img-fluid" style="height: 18px; margin: 0 auto 15px 0;"/>
-                        
-                        <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 15px;">
-                            <div>
-                                <h4 style="margin:0; font-size: 24px; font-weight: 900; color: var(--primary-color);">₹120</h4>
-                            </div>
-                            <button onclick="openModal()" style="border: none; background: transparent; cursor: pointer;">
-                                <i class="fa fa-shopping-cart ft-icon" style="color: #fff; background: var(--primary-color);"></i>
-                            </button>
-                        </div>
+                    <!-- Item 3 -->
+                    <div class="menu-card">
+                        <span class="badge" style="background: #333; color: #fff;">CAFE SPECIAL</span>
+                        <img src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" class="menu-img">
+                        <h3>Crispy Chicken Burger</h3>
+                        <p>Juicy patty, fresh lettuce, melted cheese and cafe-style fries.</p>
+                        <div class="price">₹149</div>
+                        <button class="btn btn-green" style="margin-top: 15px;" onclick="scrollToBook()">Book This</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Dark Feature Section 1 -->
-    <section id="izlvmb" class="gjs-ft-section">
-        <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
-            <div class="gjs-ft-row" style="align-items: center;">
-                <div id="ijq8bx" class="gjs-ft-column" style="flex-basis: 50%;">
-                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/e0nju_406_uczZVGkrbx406image2.png" alt="Best Seller Dish" class="img-fluid" style="filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)); transform: rotate(-5deg);"/>
-                </div>
-                <div id="ionwls" class="gjs-ft-column" style="flex-basis: 50%;">
-                    <h1 class="ftheadline">Authentic Litti Chokha [BestSeller]</h1>
-                    <h2 class="ftsub_heading" style="color: var(--primary-color);">The taste of home.</h2>
-                    <p class="ftparagraph">Roasted gram flour sattu, mixed with authentic spices, stuffed in wheat balls and baked over coal. Served with spicy chokha and ghee.</p>
-                    <div style="margin-top: 30px;">
-                        <a href="javascript:void(0)" onclick="openModal()" class="gjs-btn" style="border: 2px solid var(--primary-color); background: transparent; color: var(--primary-color);">
-                            <span class="ffbtnmaintxt">Order Now & Get 25% Off</span>
-                        </a>
+        <!-- Feature Section -->
+        <section id="feature-section" class="gjs-ft-section bg-dark">
+            <div class="container">
+                <div class="row" style="align-items: center;">
+                    <div class="col">
+                        <img src="https://img.flexifunnels.io/images/163/e0nju_406_uczZVGkrbx406image2.png" class="img-fluid" style="filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)); transform: rotate(-5deg);">
+                    </div>
+                    <div class="col">
+                        <h1>Ahuna Mutton Handi</h1>
+                        <h2 style="font-size: 1.5rem; color: var(--gold); margin-bottom: 20px;">The Taste of Tradition.</h2>
+                        <p style="font-size: 1.1rem; margin-bottom: 30px;">Our chefs prepare this delicacy with patience and passion. Using secret spice blends from Champaran, sealed in clay pots to retain every ounce of flavor.</p>
+                        <a href="#booking-section" class="btn" style="border: 2px solid var(--primary); background: transparent; color: var(--primary);">Pre-Book Handi</a>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Dark Feature Section 2 -->
-    <section id="ij94xi" class="gjs-ft-section">
-        <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
-            <div class="gjs-ft-row" style="align-items: center;">
-                <div class="gjs-ft-column" style="flex-basis: 50%;">
-                    <h1 class="ftheadline">Champaran Style Special</h1>
-                    <h2 class="ftsub_heading" style="color: var(--primary-color);">Slow cooked in earthen pots.</h2>
-                    <p class="ftparagraph">Experience the smoky flavor of meat cooked in sealed clay pots with whole spices and garlic bulbs. A Bihar specialty.</p>
-                    <div style="margin-top: 30px;">
-                        <a href="javascript:void(0)" onclick="openModal()" class="gjs-btn" style="border: 2px solid var(--primary-color); background: transparent; color: var(--primary-color);">
-                            <span class="ffbtnmaintxt">Order Now & Get 25% Off</span>
-                        </a>
+        <!-- Social / Facebook Section -->
+        <section id="social-section" class="gjs-ft-section" style="background: #f0f2f5;">
+            <div class="container" style="text-align: center;">
+                <div style="background: #fff; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 500px; width: 100%;">
+                    <img src="https://img.flexifunnels.io/images/163/i5ntg_139_logo1.png" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #eee; margin-bottom: 15px;">
+                    <h3 style="margin: 0; color: #1c1e21;">MG Cafe & Restro Swad-E-Bihar</h3>
+                    <p style="color: #65676b; margin: 5px 0 15px;">Restaurant · Danapur, Patna</p>
+                    <div style="color: var(--facebook); margin-bottom: 20px;">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> 
+                        <span style="color: #65676b; font-weight: 600; margin-left: 5px;">4.5 Rating</span>
                     </div>
-                </div>
-                <div class="gjs-ft-column" style="flex-basis: 50%;">
-                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/qzmji_406_5b7YU2P8ZK406image3.png" alt="Special Dish" class="img-fluid" style="filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)); transform: rotate(5deg);"/>
+                    <a href="#" class="btn" style="background: var(--facebook); width: 100%; box-shadow: none;"><i class="fab fa-facebook-square" style="margin-right: 8px;"></i> Connect on Facebook</a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Testimonial Section -->
-    <section class="gjs-ft-section" style="background: #fff;">
-        <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
-            <div class="gjs-ft-row">
-                <div class="gjs-ft-column" style="text-align: center;">
-                    <p class="ftparagraph" style="color: var(--secondary-color); font-weight: 700; letter-spacing: 1px;">HAPPY CUSTOMERS</p>
-                    <h1 class="ftheadline">What People Say About Swad-E-Bihar!</h1>
-                </div>
+        <!-- Map Section -->
+        <section id="map-section" class="gjs-ft-section" style="padding: 100px 0; background: url('https://img.flexifunnels.io/images/163/g4ode_1920_map.png') no-repeat center center/cover; background-attachment: fixed;">
+            <div class="container" style="text-align: center;">
+                <a href="https://www.google.com/maps/place/MG+CAFE+%26+RESTRO+SWAD-E-+BIHAR/@25.5994799,85.1700191,17z" target="_blank" class="btn" style="background: white; color: var(--primary); font-size: 1.2rem;">
+                    <i class="material-icons" style="vertical-align: middle; margin-right: 10px;">place</i> Locate Us on Google Maps
+                </a>
+                <p style="margin-top: 20px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.8); font-weight: 800; font-size: 1.2rem;">Near Danapur, Patna, Bihar 801503</p>
             </div>
-            <div class="gjs-ft-row" style="align-items: center; margin-top: 40px;">
-                <div class="gjs-ft-column" style="flex-basis: 50%;">
-                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/c1mdg_348_mXV1johh9f348image4.png" alt="Chef Image" class="img-fluid" style="max-width: 90%; border-radius: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.1);"/>
-                </div>
-                <div class="gjs-ft-column" style="flex-basis: 50%;">
-                    <img src="https://img.flexifunnels.io/images/163/kznda_41_mpw9cJ6oPI41coma.png" alt="Quote" class="img-fluid" style="width: 60px; margin: 0 0 30px 0; opacity: 0.3;"/>
-                    <p class="ftparagraph" style="text-align: left; font-style: italic; font-size: 1.2rem; color: #222;">"Simply the best food in Danapur. The authenticity of the spices and the presentation is top-notch. Highly recommended for family dinners!"</p>
-                    <div style="margin-top: 15px;">
-                        <h3 class="ftheadline" style="font-size: 24px; margin-bottom: 5px; text-align: left;">Amit Kumar</h3>
-                        <p style="color: #666; font-weight: 600;">Food Blogger, Patna</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+    </div>
+    <!-- End of Main Content -->
 
-    <!-- Map/Location Divider -->
-    <section class="gjs-ft-section" style="padding: 120px 0; background: url('https://img.flexifunnels.io/images/163/g4ode_1920_map.png') no-repeat center center/cover; background-attachment: fixed;">
-        <div style="text-align: center;">
-            <a href="https://www.google.com/maps/place/MG+CAFE+%26+RESTRO+SWAD-E-+BIHAR/@25.5994799,85.1700191,17z" target="_blank" class="gjs-btn" style="background: white; color: var(--primary-color);">
-                <i class="material-icons" style="vertical-align: middle;">place</i> Open in Google Maps
-            </a>
-        </div>
-    </section>
-
-    <!-- Reservation Form Section -->
-    <section id="ib8r3j" class="gjs-ft-section">
-        <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
-            <div class="gjs-ft-row" style="align-items: center;">
-                <!-- Form Box -->
-                <div id="ihncul" class="gjs-ft-column">
-                    <div class="urgency-badge">
-                        <span class="urgency-dot"></span> Only 4 tables left for tonight!
+    <!-- Booking Section (Static ID for Linking) -->
+    <section id="booking-section" class="gjs-ft-section">
+        <div class="container">
+            <div class="reservation-box">
+                <h2 style="text-align: center; color: var(--primary);">Secure Your Table</h2>
+                <p style="text-align: center; margin-bottom: 30px;">Fill this form to reserve your spot instantly.</p>
+                
+                <form id="bookingForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" id="name" class="form-control" placeholder="Amit Kumar" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="9876543210" required>
+                        </div>
                     </div>
-                    <h1 class="ftheadline" style="color: var(--primary-color); text-align: center; font-size: 2rem;">VIP Table Reservation</h1>
-                    <p style="text-align: center; margin-bottom: 30px; color: #666;">Skip the waiting line. Book instantly.</p>
-                    
-                    <form id="reservationForm" class="flexi-form">
-                        <div class="ft-input-group">
-                            <input type="text" name="first_name" placeholder="First Name" class="ft-form-ctl"/>
-                        </div>
-                        <div class="ft-input-group">
-                            <input type="email" name="email" placeholder="Email Address" required class="ft-form-ctl"/>
-                        </div>
-                        <div class="ft-input-group">
-                            <input type="text" name="phone" placeholder="Phone Number" class="ft-form-ctl"/>
-                        </div>
-                        <div class="gjs-ft-row">
-                            <div class="gjs-ft-column" style="padding: 0 10px 0 0;">
-                                <input type="date" name="Date" class="ft-form-ctl"/>
-                            </div>
-                            <div class="gjs-ft-column" style="padding: 0 0 0 10px;">
-                                <input type="time" name="Time" class="ft-form-ctl"/>
-                            </div>
-                        </div>
-                        
-                        <div style="margin-top: 30px; text-align: center;">
-                            <button type="submit" class="ft-form-btn cta-pulse" style="width: 100%;">Confirm My Reservation</button>
-                        </div>
-                    </form>
-                    <div style="text-align: center; margin-top: 25px;">
-                         <a href="tel:001234567890" style="color: #666; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px;">
-                            <i class="material-icons" style="color: var(--secondary-color);">support_agent</i> Support: 00 1234 567890
-                        </a>
-                    </div>
-                </div>
 
-                <!-- Right Image -->
-                <div id="inbacj" class="gjs-ft-column" style="display: flex; align-items: center;">
-                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/ixnjm_569_image.png" alt="Food Delivery" class="img-fluid" style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));"/>
-                </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Date</label>
+                            <input type="date" id="date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Time</label>
+                            <input type="time" id="time" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Guests</label>
+                            <select id="guests" class="form-control">
+                                <option value="2">2 People</option>
+                                <option value="4">4 People</option>
+                                <option value="6">6 People</option>
+                                <option value="8">8 People</option>
+                                <option value="10+">10+ (Group)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Seating Preference</label>
+                            <select id="seating" class="form-control">
+                                <option value="Indoor AC">Indoor AC Hall</option>
+                                <option value="Rooftop">Rooftop (Open Air)</option>
+                                <option value="Private Cabin">Private Family Cabin</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Occasion</label>
+                        <select id="occasion" class="form-control">
+                            <option value="Casual Dining">Casual Dining</option>
+                            <option value="Birthday Party">Birthday Party</option>
+                            <option value="Anniversary">Anniversary</option>
+                            <option value="Business Meeting">Business Meeting</option>
+                            <option value="Date Night">Date Night</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Dietary Restrictions / Special Requests</label>
+                        <textarea id="notes" class="form-control" rows="2" placeholder="e.g., Less spicy, Cake arrangement, Jain food..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Confirm Reservation</button>
+                </form>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <section class="gjs-ft-section" style="background-color: var(--dark-bg); padding: 40px 0;">
-        <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
-            <div class="gjs-ft-row" style="align-items: center; justify-content: space-between;">
-                <div class="gjs-ft-column" style="flex-basis: auto;">
-                    <p style="color: #999; margin: 0; font-size: 14px;">© 2025 MG Cafe & Restro. All Rights Reserved. <br/>Swad-E-Bihar.</p>
-                </div>
-                <div class="gjs-ft-column" style="flex-basis: auto;">
-                    <div>
-                        <a href="#" class="ft-social facebook-bg"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="ft-social twitter-bg"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="ft-social linkedin-bg"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
+    <footer>
+        <div class="container">
+            <h3>MG Cafe & Restro</h3>
+            <p>Danapur, Patna, Bihar 801503</p>
+            <div style="margin: 20px 0;">
+                <a href="#" class="btn" style="background: rgba(255,255,255,0.1); padding: 8px 15px; font-size: 0.9rem;">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="btn" style="background: rgba(255,255,255,0.1); padding: 8px 15px; font-size: 0.9rem; margin-left: 10px;">
+                    <i class="fab fa-instagram"></i>
+                </a>
             </div>
+            <p style="font-size: 0.8rem; opacity: 0.7;">&copy; 2025 Swad-E-Bihar. All Rights Reserved.</p>
         </div>
-    </section>
+    </footer>
 
-    <!-- Modal Popup -->
-    <div id="flexiPoup_3cNMY3" class="ff-modal-popup">
-        <div class="ff-modal-content">
-            <button class="ff-modal-pop-close" onclick="closeModal()">×</button>
-            <div class="ff-modal-body" style="text-align: center;">
-                <h1 style="color: var(--secondary-color); font-family: var(--font-heading); margin-bottom: 10px;">Quick Booking</h1>
-                <p style="margin-bottom: 25px;">Secure your table instantly.</p>
-                <form onsubmit="handleModalSubmit(event)" style="text-align: left;">
-                    <div class="ft-input-group">
-                        <input type="text" placeholder="Full Name" required class="ft-form-ctl"/>
-                    </div>
-                    <div class="ft-input-group">
-                        <input type="email" placeholder="Email Address" required class="ft-form-ctl"/>
-                    </div>
-                    <div class="ft-input-group">
-                        <input type="text" placeholder="Phone Number" required class="ft-form-ctl"/>
-                    </div>
-                    <button type="submit" class="gjs-btn" style="width: 100%; background-color: var(--secondary-color); margin-top: 10px;">Complete Booking</button>
-                </form>
-                <p style="font-size: 12px; color: #888; margin-top: 15px;"><i class="fa fa-lock"></i> Your information is secure.</p>
-            </div>
+    <!-- Mobile Sticky Bar -->
+    <div class="mobile-bar">
+        <a href="tel:+911234567890" class="mobile-btn mb-call"><i class="fas fa-phone-alt"></i> Call</a>
+        <a href="#booking-section" class="mobile-btn mb-book"><i class="fas fa-calendar-check"></i> Book Table</a>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <button onclick="document.getElementById('successModal').classList.remove('active')" style="position: absolute; right: 20px; top: 20px; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            <i class="fas fa-check-circle" style="font-size: 60px; color: var(--secondary); margin-bottom: 20px;"></i>
+            <h3 style="color: var(--secondary); margin-bottom: 10px;">Booking Requested!</h3>
+            <p>Thank you, <span id="modalName" style="font-weight: bold;"></span>.</p>
+            <p>We have received your request for <span id="modalGuests" style="font-weight: bold;"></span> people on <span id="modalDate" style="font-weight: bold;"></span>.</p>
+            <p style="font-size: 0.9rem; color: #666; margin-top: 15px;">We will call you shortly on your number to confirm.</p>
+            <button class="btn" onclick="document.getElementById('successModal').classList.remove('active')" style="margin-top: 20px; width: 100%;">Okay, Great!</button>
         </div>
     </div>
 
-    <!-- Interactive Scripts -->
-    <script>
-        // Modal Logic
-        const modal = document.getElementById('flexiPoup_3cNMY3');
+    <!-- FIREBASE SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        function openModal() {
-            modal.classList.add('show');
-        }
+        // TODO: PASTE YOUR FIREBASE CONFIG HERE
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "your-project-id.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project-id.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abc123456"
+        };
 
-        function closeModal() {
-            modal.classList.remove('show');
-        }
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-        // Close modal if clicking outside the content box
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeModal();
+        // 1. Dynamic Content Loading logic
+        async function loadDynamicContent() {
+            try {
+                const docRef = doc(db, "site_content", "live_page");
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    console.log("Loading dynamic content...");
+                    const data = docSnap.data();
+                    if(data.html) {
+                        document.getElementById('main-content').innerHTML = data.html;
+                    }
+                } else {
+                    console.log("No dynamic content found. Using default.");
+                }
+            } catch (e) {
+                console.error("Error loading dynamic content:", e);
             }
         }
+        
+        // Load content on start
+        loadDynamicContent();
 
-        // Form Handling (Visual Only)
-        function handleModalSubmit(e) {
+        // 2. Booking Form Logic
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            // Simulate processing
-            const btn = e.target.querySelector('button');
-            const originalText = btn.innerText;
-            btn.innerText = "Booking...";
             
-            setTimeout(() => {
-                alert("Table Reserved! We will call you to confirm shortly.");
-                closeModal();
-                btn.innerText = originalText;
-            }, 1000);
-        }
+            const submitBtn = e.target.querySelector('button');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "Processing...";
+            submitBtn.disabled = true;
 
-        document.getElementById('reservationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = this.querySelector('button');
-            const originalText = btn.innerText;
-            btn.innerText = "Processing...";
-            
-            setTimeout(() => {
-                alert("Reservation submitted successfully! See you soon.");
-                btn.innerText = originalText;
-            }, 1000);
+            const name = document.getElementById('name').value;
+            const guests = document.getElementById('guests').value;
+            const date = document.getElementById('date').value;
+
+            try {
+                await addDoc(collection(db, "bookings"), {
+                    name: name,
+                    phone: document.getElementById('phone').value,
+                    date: date,
+                    time: document.getElementById('time').value,
+                    guests: guests,
+                    seating: document.getElementById('seating').value,
+                    occasion: document.getElementById('occasion').value,
+                    notes: document.getElementById('notes').value,
+                    status: 'Pending',
+                    timestamp: serverTimestamp()
+                });
+
+                document.getElementById('modalName').innerText = name;
+                document.getElementById('modalGuests').innerText = guests;
+                document.getElementById('modalDate').innerText = date;
+                document.getElementById('successModal').classList.add('active');
+                e.target.reset();
+
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert("Error submitting booking. Please check your internet connection.");
+            }
+
+            submitBtn.innerText = originalText;
+            submitBtn.disabled = false;
         });
+
+        // Helper scroll
+        window.scrollToBook = function() {
+            document.getElementById('booking-section').scrollIntoView({behavior: 'smooth'});
+        }
     </script>
 </body>
 </html>
