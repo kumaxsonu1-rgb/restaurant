@@ -3,487 +3,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - MG Cafe & Restro</title>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Admin - MG Cafe</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
     <style>
-        :root { --primary: #d32f2f; --dark: #333; --bg: #f4f6f8; --success: #388e3c; --panel-width: 300px; }
-        body { margin: 0; font-family: 'Open Sans', sans-serif; background: var(--bg); color: var(--dark); height: 100vh; overflow: hidden; }
-        
-        /* Login Overlay */
-        #loginOverlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;
-        }
-        .login-box { text-align: center; max-width: 300px; width: 100%; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; }
-        .login-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
-        .login-btn { width: 100%; padding: 12px; background: var(--primary); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px; }
-        
-        /* Dashboard Layout */
-        .app-container { display: flex; height: 100vh; }
-        
-        /* Sidebar */
-        .sidebar { width: 220px; background: #fff; border-right: 1px solid #eee; display: flex; flex-direction: column; z-index: 100; }
-        .sidebar-header { padding: 20px; border-bottom: 1px solid #eee; font-weight: bold; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; color: var(--primary); }
-        .nav-item { padding: 15px 20px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #555; transition: 0.2s; }
-        .nav-item:hover, .nav-item.active { background: #ffebee; color: var(--primary); border-right: 3px solid var(--primary); }
-        .logout { margin-top: auto; border-top: 1px solid #eee; color: #d32f2f; }
-
-        /* Main Content */
-        .main-content { flex: 1; overflow-y: auto; position: relative; display: flex; flex-direction: column; }
-        
-        /* Views */
-        .view { display: none; height: 100%; }
-        .view.active { display: block; }
-
-        /* --- Reservations View Styles --- */
-        #view-reservations { padding: 20px; overflow-y: auto; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 4px solid var(--primary); }
-        .stat-num { font-size: 2rem; font-weight: bold; }
-        .stat-label { color: #666; font-size: 0.9rem; }
-
-        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #f9fafb; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: #555; }
-        
-        .badge { padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
-        .badge-Pending { background: #fff3e0; color: #ef6c00; }
-        .badge-Confirmed { background: #e8f5e9; color: #2e7d32; }
-        
-        /* --- Simple Editor Styles --- */
-        #view-editor { position: relative; background: #ddd; }
-        
-        /* The Toolbar */
-        .editor-top-bar {
-            height: 50px; background: #333; color: white; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .save-btn { background: var(--success); border: none; color: white; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        .save-btn:hover { background: #2e7d32; }
-
-        /* The Canvas */
-        #editor-canvas { 
-            height: calc(100% - 50px); width: 100%; overflow-y: auto; background: white; padding-bottom: 50px;
-            padding-right: var(--panel-width); 
-        }
-
-        /* The Properties Panel */
-        #properties-panel {
-            position: absolute; top: 50px; right: 0; width: var(--panel-width); height: calc(100% - 50px);
-            background: #fff; border-left: 1px solid #ccc; box-shadow: -2px 0 10px rgba(0,0,0,0.05);
-            display: none; flex-direction: column; overflow-y: auto;
-        }
-        #properties-panel.active { display: flex; }
-        
-        .panel-header { padding: 15px; background: #f9f9f9; border-bottom: 1px solid #eee; font-weight: bold; display: flex; justify-content: space-between; }
-        .panel-content { padding: 15px; }
-        
-        .prop-group { margin-bottom: 15px; }
-        .prop-label { font-size: 12px; color: #666; display: block; margin-bottom: 5px; font-weight: 600; text-transform: uppercase; }
-        .prop-input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; }
-        .prop-textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 80px; resize: vertical; }
-        
-        /* Highlight Overlay */
-        .highlight-box {
-            position: absolute; border: 2px solid #2196f3; pointer-events: none; z-index: 999; display: none;
-        }
-        
+        /* Editor Highlight */
+        .editor-highlight { outline: 2px dashed #3b82f6 !important; cursor: pointer; }
+        .editor-selected { outline: 3px solid #ef4444 !important; z-index: 10; position: relative; }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 h-screen overflow-hidden text-gray-800 font-sans">
 
-    <!-- Login -->
-    <div id="loginOverlay">
-        <div class="login-box">
-            <h2 style="color: var(--primary);">MG Cafe Admin</h2>
-            <p>Please log in to manage your website.</p>
-            <form id="loginForm">
-                <input type="password" id="passwordInput" class="login-input" placeholder="Password" required>
-                <button type="submit" class="login-btn">Login</button>
+    <!-- Login Overlay -->
+    <div id="loginOverlay" class="fixed inset-0 bg-gray-900 z-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-sm text-center">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="material-icons text-red-600 text-3xl">admin_panel_settings</i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Admin Login</h2>
+            <p class="text-gray-500 mb-6 text-sm">Enter access code to manage website.</p>
+            <form id="loginForm" class="space-y-4">
+                <input type="password" id="passwordInput" class="w-full border p-3 rounded focus:outline-none focus:border-red-500 transition" placeholder="Password" required>
+                <button type="submit" class="w-full bg-red-600 text-white p-3 rounded font-bold hover:bg-red-700 transition">Access Dashboard</button>
             </form>
-            <p id="loginError" style="color: red; margin-top: 10px; display: none;">Incorrect password</p>
+            <p id="loginError" class="text-red-500 text-sm mt-3 hidden">Access Denied: Incorrect Password</p>
         </div>
     </div>
 
-    <!-- Dashboard -->
-    <div id="dashboard" style="display: none;">
-        <div class="app-container">
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <i class="material-icons">restaurant_menu</i> MG Admin
-                </div>
-                <div class="nav-item active" onclick="switchView('reservations')">
-                    <i class="material-icons">event_seat</i> Reservations
-                </div>
-                <div class="nav-item" onclick="switchView('editor')">
-                    <i class="material-icons">touch_app</i> Click Editor
-                </div>
-                <div class="nav-item logout" onclick="logout()">
-                    <i class="material-icons">logout</i> Logout
-                </div>
-            </div>
-
-            <div class="main-content">
-                
-                <!-- RESERVATIONS VIEW -->
-                <div id="view-reservations" class="view active">
-                    <h2 style="margin-top: 0;">Table Bookings</h2>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-num" id="totalCount">0</div>
-                            <div class="stat-label">Total Reservations</div>
-                        </div>
-                        <div class="stat-card" style="border-left-color: #388e3c;">
-                            <div class="stat-num" id="todayCount">0</div>
-                            <div class="stat-label">For Today</div>
-                        </div>
-                    </div>
-
-                    <div style="overflow-x: auto;">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Status</th>
-                                    <th>Guest</th>
-                                    <th>Details</th>
-                                    <th>Requests</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="bookingTableBody">
-                                <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- EDITOR VIEW -->
-                <div id="view-editor" class="view">
-                    <div class="editor-top-bar">
-                        <span style="font-size: 14px;">Mode: <b>Click an element to edit</b></span>
-                        <button class="save-btn" onclick="saveWebsiteChanges()">
-                            <i class="material-icons" style="font-size: 18px;">cloud_upload</i> Publish Changes
-                        </button>
-                    </div>
-
-                    <!-- Editor Canvas (Where we load the page) -->
-                    <div id="editor-canvas">
-                        <div style="padding: 50px; text-align: center;">Loading Page...</div>
-                    </div>
-
-                    <!-- Right Property Panel -->
-                    <div id="properties-panel">
-                        <div class="panel-header">
-                            <span>Edit Element</span>
-                            <span id="el-tag" style="color: #999; font-weight: normal; font-size: 12px;">DIV</span>
-                        </div>
-                        <div class="panel-content">
-                            <!-- TEXT -->
-                            <div class="prop-group" id="pg-text">
-                                <label class="prop-label">Text Content</label>
-                                <textarea id="inp-text" class="prop-textarea" oninput="applyChange('text')"></textarea>
-                            </div>
-                            <!-- LINK -->
-                            <div class="prop-group" id="pg-link" style="display:none;">
-                                <label class="prop-label">Link URL (href)</label>
-                                <input type="text" id="inp-href" class="prop-input" oninput="applyChange('href')">
-                            </div>
-                            <!-- IMAGE -->
-                            <div class="prop-group" id="pg-img" style="display:none;">
-                                <label class="prop-label">Image Source URL</label>
-                                <input type="text" id="inp-src" class="prop-input" oninput="applyChange('src')">
-                            </div>
-                            
-                            <!-- BACKGROUND IMAGE (New) -->
-                            <div class="prop-group" id="pg-bg-img">
-                                <label class="prop-label">Background Image URL</label>
-                                <input type="text" id="inp-bg-img" class="prop-input" oninput="applyChange('style-bg-img')">
-                            </div>
-                            
-                            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-                            
-                            <!-- STYLES -->
-                            <div class="prop-group">
-                                <label class="prop-label">Text Color</label>
-                                <input type="color" id="inp-color" class="prop-input" style="height: 40px; cursor: pointer;" oninput="applyChange('style-color')">
-                            </div>
-                            <div class="prop-group">
-                                <label class="prop-label">Background Color</label>
-                                <input type="color" id="inp-bg" class="prop-input" style="height: 40px; cursor: pointer;" oninput="applyChange('style-bg')">
-                            </div>
-                            <div class="prop-group">
-                                <label class="prop-label">Font Size (px, rem)</label>
-                                <input type="text" id="inp-size" class="prop-input" oninput="applyChange('style-size')">
-                            </div>
-                            <div class="prop-group">
-                                <label class="prop-label">Border Radius (px)</label>
-                                <input type="text" id="inp-radius" class="prop-input" oninput="applyChange('style-radius')">
-                            </div>
-                            <div class="prop-group">
-                                <label class="prop-label">Padding</label>
-                                <input type="text" id="inp-padding" class="prop-input" oninput="applyChange('style-padding')">
-                            </div>
-                            <div class="prop-group">
-                                <label class="prop-label">Margin</label>
-                                <input type="text" id="inp-margin" class="prop-input" oninput="applyChange('style-margin')">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Highlight Box -->
-                    <div id="highlight-box" class="highlight-box"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- FIREBASE SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-
-        // --- CONFIG ---
-        const LOGIN_PASSWORD = "admin"; 
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="flex h-screen hidden">
         
-        // PASTE YOUR FIREBASE CONFIG HERE
-        const firebaseConfig = {
-            apiKey: "AIzaSyCdjr6GwvNtC-qqLhX7X0eOCZk54orEBto",
-            authDomain: "fir-711c2.firebaseapp.com",
-            projectId: "fir-711c2",
-            storageBucket: "fir-711c2.firebasestorage.app",
-            messagingSenderId: "212609923784",
-            appId: "1:212609923784:web:43c274cea203256e2943fd",
-            measurementId: "G-2FGBRS9W4X"
-        };
-        // --- END CONFIG ---
+        <!-- Sidebar -->
+        <div class="w-64 bg-white border-r flex-shrink-0 flex flex-col">
+            <div class="h-16 flex items-center px-6 border-b font-bold text-red-600 text-xl tracking-wide">
+                MG ADMIN
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <button onclick="switchView('reservations')" class="nav-item w-full flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-red-50 hover:text-red-600 transition active-nav" id="nav-res">
+                    <i class="material-icons mr-3">event_seat</i> Reservations
+                </button>
+                <button onclick="switchView('editor')" class="nav-item w-full flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-red-50 hover:text-red-600 transition" id="nav-edit">
+                    <i class="material-icons mr-3">edit_note</i> Website Editor
+                </button>
+            </nav>
+            <div class="p-4 border-t">
+                <button onclick="logout()" class="w-full flex items-center px-4 py-2 text-red-500 hover:bg-red-50 rounded transition">
+                    <i class="material-icons mr-3">logout</i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="flex-1 flex flex-col overflow-hidden relative">
+            
+            <!-- RESERVATIONS VIEW -->
+            <div id="view-reservations" class="view-panel flex-1 overflow-auto p-8 bg-gray-50">
+                <h1 class="text-2xl font-bold mb-6">Booking Requests</h1>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-red-500">
+                        <div class="text-gray-500 text-sm uppercase font-bold">Total Bookings</div>
+                        <div class="text-3xl font-bold mt-2" id="totalCount">0</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500">
+                        <div class="text-gray-500 text-sm uppercase font-bold">Today's Guests</div>
+                        <div class="text-3xl font-bold mt-2" id="todayCount">0</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
+                        <div class="text-gray-500 text-sm uppercase font-bold">Pending Actions</div>
+                        <div class="text-3xl font-bold mt-2" id="pendingCount">0</div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-gray-100 border-b">
+                            <tr>
+                                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase">Status</th>
+                                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase">Guest Details</th>
+                                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase">Date & Time</th>
+                                <th class="text-left py-3 px-4 text-xs font-semibold text-gray-600 uppercase">Requests</th>
+                                <th class="text-right py-3 px-4 text-xs font-semibold text-gray-600 uppercase">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingTableBody" class="divide-y divide-gray-100">
+                            <tr><td colspan="5" class="p-8 text-center text-gray-500">Loading bookings...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- EDITOR VIEW -->
+            <div id="view-editor" class="view-panel hidden flex-1 flex flex-col h-full">
+                <!-- Editor Toolbar -->
+                <div class="h-14 bg-gray-800 text-white flex items-center justify-between px-4 shadow-md z-20">
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm font-medium bg-gray-700 px-3 py-1 rounded">Visual Mode</span>
+                        <span class="text-xs text-gray-400">Click elements to edit</span>
+                    </div>
+                    <button onclick="saveWebsiteChanges()" class="save-btn flex items-center gap-2 bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-sm font-bold transition">
+                        <i class="material-icons text-sm">save</i> Publish Live
+                    </button>
+                </div>
+
+                <div class="flex-1 flex overflow-hidden relative">
+                    <!-- The Canvas (Page Preview) -->
+                    <div id="editor-canvas" class="flex-1 bg-white overflow-y-auto pb-20 shadow-inner">
+                        <div class="p-20 text-center text-gray-400">Loading Editor...</div>
+                    </div>
+
+                    <!-- Properties Panel -->
+                    <div id="properties-panel" class="w-80 bg-white border-l shadow-xl z-30 transform translate-x-full transition-transform duration-300 flex flex-col">
+                        <div class="p-4 border-b bg-gray-50 font-bold flex justify-between items-center">
+                            <span>Edit Element</span>
+                            <button onclick="deselectElement()" class="text-gray-400 hover:text-red-500"><i class="material-icons">close</i></button>
+                        </div>
+                        <div class="p-4 flex-1 overflow-y-auto space-y-5">
+                            <div class="text-xs font-bold text-gray-400 uppercase">Content</div>
+                            
+                            <!-- Text Edit -->
+                            <div id="pg-text">
+                                <label class="block text-xs font-bold text-gray-600 mb-1">Text Content</label>
+                                <textarea id="inp-text" class="w-full border rounded p-2 text-sm h-24" oninput="applyChange('text')"></textarea>
+                            </div>
+                            
+                            <!-- Link Edit -->
+                            <div id="pg-link" class="hidden">
+                                <label class="block text-xs font-bold text-gray-600 mb-1">Link URL</label>
+                                <input type="text" id="inp-href" class="w-full border rounded p-2 text-sm" oninput="applyChange('href')">
+                            </div>
+
+                             <!-- Image Edit -->
+                             <div id="pg-img" class="hidden">
+                                <label class="block text-xs font-bold text-gray-600 mb-1">Image URL</label>
+                                <input type="text" id="inp-src" class="w-full border rounded p-2 text-sm" oninput="applyChange('src')">
+                            </div>
+
+                            <div class="border-t pt-4"></div>
+                            <div class="text-xs font-bold text-gray-400 uppercase">Styling</div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">Text Color</label>
+                                <div class="flex gap-2">
+                                    <input type="color" id="inp-color" class="h-8 w-8 cursor-pointer border rounded" oninput="applyChange('style-color')">
+                                    <input type="text" id="inp-color-text" class="flex-1 border rounded p-1 text-xs" readonly>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">Background Color</label>
+                                <div class="flex gap-2">
+                                    <input type="color" id="inp-bg" class="h-8 w-8 cursor-pointer border rounded" oninput="applyChange('style-bg')">
+                                    <input type="text" id="inp-bg-text" class="flex-1 border rounded p-1 text-xs" readonly>
+                                </div>
+                            </div>
+
+                             <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">Font Size</label>
+                                <input type="text" id="inp-size" class="w-full border rounded p-2 text-sm" oninput="applyChange('style-size')">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">Padding</label>
+                                <input type="text" id="inp-padding" class="w-full border rounded p-2 text-sm" oninput="applyChange('style-padding')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Default Template (Fallback if DB is empty) -->
+    <template id="default-template">
+        <section class="p-20 text-center bg-gray-50">
+            <h1 class="text-4xl font-bold mb-4">Welcome to Your New Website</h1>
+            <p class="mb-8">This is the default content. Click "Edit Website" to start customization.</p>
+            <button class="bg-red-600 text-white px-6 py-2 rounded">Example Button</button>
+        </section>
+    </template>
+
+    <!-- FIREBASE & ADMIN LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, doc, setDoc, getDoc, serverTimestamp, signInAnonymously, getAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+        import { getAuth as getFirebaseAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+        // CONFIG (Same fallback logic as index.html)
+        let firebaseConfig;
+        if (typeof __firebase_config !== 'undefined') {
+            firebaseConfig = JSON.parse(__firebase_config);
+        } else {
+             firebaseConfig = {
+                apiKey: "AIzaSyCdjr6GwvNtC-qqLhX7X0eOCZk54orEBto",
+                authDomain: "fir-711c2.firebaseapp.com",
+                projectId: "fir-711c2",
+                storageBucket: "fir-711c2.firebasestorage.app",
+                messagingSenderId: "212609923784",
+                appId: "1:212609923784:web:43c274cea203256e2943fd",
+            };
+        }
 
         const app = initializeApp(firebaseConfig);
+        const auth = getFirebaseAuth(app);
         const db = getFirestore(app);
+        
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
+        const LOGIN_PASSWORD = "admin"; // Still client-side (Weak Security)
 
-        // --- AUTHENTICATION ---
+        // --- AUTH & INIT ---
         const loginForm = document.getElementById('loginForm');
-        if(sessionStorage.getItem('isLoggedIn') === 'true') showDashboard();
-
-        loginForm.addEventListener('submit', (e) => {
+        
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if(document.getElementById('passwordInput').value === LOGIN_PASSWORD) {
-                sessionStorage.setItem('isLoggedIn', 'true');
-                showDashboard();
+            const pwd = document.getElementById('passwordInput').value;
+            
+            if (pwd === LOGIN_PASSWORD) {
+                try {
+                    // REAL Auth for Database Access
+                    await signInAnonymously(auth);
+                    
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    initDashboard();
+                } catch(err) {
+                    alert("System Error: Could not connect to database. " + err.message);
+                }
             } else {
-                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('loginError').classList.remove('hidden');
             }
         });
 
-        window.logout = function() {
-            sessionStorage.removeItem('isLoggedIn');
+        function logout() {
             location.reload();
         }
 
-        function showDashboard() {
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-            initReservations();
+        function initDashboard() {
+            loadReservations();
+            loadEditor();
         }
 
-        window.switchView = function(viewName) {
-            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        // --- NAVIGATION ---
+        window.switchView = function(view) {
+            document.getElementById('view-reservations').classList.add('hidden');
+            document.getElementById('view-editor').classList.add('hidden');
+            document.getElementById('nav-res').classList.remove('bg-red-50', 'text-red-600');
+            document.getElementById('nav-edit').classList.remove('bg-red-50', 'text-red-600');
+
+            if (view === 'reservations') {
+                document.getElementById('view-reservations').classList.remove('hidden');
+                document.getElementById('nav-res').classList.add('bg-red-50', 'text-red-600');
+            } else {
+                document.getElementById('view-editor').classList.remove('hidden');
+                document.getElementById('nav-edit').classList.add('bg-red-50', 'text-red-600');
+            }
+        }
+
+        // --- RESERVATIONS ---
+        function loadReservations() {
+            // Path Rule: artifacts/{appId}/public/data/bookings
+            const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'bookings'), orderBy("timestamp", "desc"));
             
-            const navItems = document.querySelectorAll('.nav-item');
-            if(viewName === 'reservations') navItems[0].classList.add('active');
-            if(viewName === 'editor') navItems[1].classList.add('active');
-
-            document.getElementById('view-' + viewName).classList.add('active');
-
-            if(viewName === 'editor') initEditor();
-        }
-
-        // --- RESERVATIONS LOGIC ---
-        function initReservations() {
-            const q = query(collection(db, "bookings"), orderBy("timestamp", "desc"));
             onSnapshot(q, (snapshot) => {
                 const tbody = document.getElementById('bookingTableBody');
                 tbody.innerHTML = '';
-                let total = 0, today = 0;
+                
+                let total = 0, today = 0, pending = 0;
                 const todayStr = new Date().toISOString().split('T')[0];
 
-                snapshot.forEach((docSnapshot) => {
+                if(snapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No bookings yet.</td></tr>`;
+                    return;
+                }
+
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const id = docSnap.id;
                     total++;
-                    const data = docSnapshot.data();
                     if(data.date === todayStr) today++;
-                    
+                    if(data.status === 'Pending') pending++;
+
+                    const statusColors = {
+                        'Pending': 'bg-orange-100 text-orange-700',
+                        'Confirmed': 'bg-green-100 text-green-700'
+                    };
+                    const badgeClass = statusColors[data.status] || 'bg-gray-100 text-gray-700';
+
                     const row = document.createElement('tr');
+                    row.className = 'hover:bg-gray-50 transition';
                     row.innerHTML = `
-                        <td><span class="badge badge-${data.status}">${data.status}</span></td>
-                        <td><strong>${data.name}</strong><br><small>${data.phone}</small></td>
-                        <td>${data.date}<br>${data.time}</td>
-                        <td><small>${data.notes || '-'}</small></td>
-                        <td>${data.status === 'Pending' ? `<button onclick="confirmBk('${docSnapshot.id}')" style="color:green;cursor:pointer;">Confirm</button>` : '✓'}</td>
+                        <td class="p-4"><span class="px-2 py-1 rounded text-xs font-bold ${badgeClass}">${data.status}</span></td>
+                        <td class="p-4">
+                            <div class="font-bold text-gray-800">${data.name}</div>
+                            <div class="text-sm text-gray-500">${data.phone}</div>
+                        </td>
+                        <td class="p-4 text-sm text-gray-600">${data.date}<br>${data.time}</td>
+                        <td class="p-4 text-sm text-gray-600 max-w-xs truncate">${data.notes || '-'} (${data.guests} ppl, ${data.seating})</td>
+                        <td class="p-4 text-right">
+                            ${data.status === 'Pending' ? 
+                                `<button onclick="confirmBooking('${id}')" class="text-green-600 hover:text-green-800 font-bold text-sm">Confirm</button>` : 
+                                `<span class="text-green-600 material-icons text-sm">check_circle</span>`}
+                        </td>
                     `;
                     tbody.appendChild(row);
                 });
+
                 document.getElementById('totalCount').innerText = total;
                 document.getElementById('todayCount').innerText = today;
+                document.getElementById('pendingCount').innerText = pending;
+            }, (error) => {
+                console.error("Data Load Error:", error);
             });
         }
-        
-        window.confirmBk = async (id) => await updateDoc(doc(db, "bookings", id), { status: "Confirmed" });
 
-        // --- SIMPLE EDITOR LOGIC ---
+        window.confirmBooking = async (id) => {
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'bookings', id), { status: 'Confirmed' }, { merge: true });
+            } catch(e) { alert("Error updating: " + e.message); }
+        };
+
+        // --- EDITOR LOGIC ---
         let selectedEl = null;
 
-        async function initEditor() {
+        async function loadEditor() {
             const canvas = document.getElementById('editor-canvas');
             
-            // 1. Load HTML
-            let htmlContent = '';
             try {
-                const docSnap = await getDoc(doc(db, "site_content", "live_page"));
+                // Fetch LIVE content
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'site_content', 'live_page');
+                const docSnap = await getDoc(docRef);
+
                 if(docSnap.exists() && docSnap.data().html) {
-                    htmlContent = docSnap.data().html;
+                    // Inject HTML into editor
+                    canvas.innerHTML = docSnap.data().html;
                 } else {
-                    const response = await fetch('index.html');
-                    const text = await response.text();
-                    const parser = new DOMParser();
-                    // IMPORTANT: Only edit the main editable area
-                    const docParsed = parser.parseFromString(text, 'text/html');
-                    const mainContent = docParsed.getElementById('editable-content');
-                    htmlContent = mainContent ? mainContent.innerHTML : "<div>Error: Could not find editable content in index.html</div>";
+                    // Fallback to Template if no data
+                    const tpl = document.getElementById('default-template').innerHTML;
+                    canvas.innerHTML = tpl;
                 }
-            } catch(e) { htmlContent = "<div>Load Error</div>"; }
+            } catch(e) {
+                canvas.innerHTML = `<div class="p-10 text-red-500">Error loading content: ${e.message}</div>`;
+            }
 
-            canvas.innerHTML = htmlContent;
-
-            // 2. Add Interactions
+            // Bind Editor Interactions
             canvas.addEventListener('mouseover', (e) => {
                 e.stopPropagation();
-                // Simple highlight effect
-                e.target.style.outline = "1px dashed #2196f3";
+                if(e.target !== selectedEl && e.target !== canvas) {
+                    e.target.classList.add('editor-highlight');
+                }
             });
-            
             canvas.addEventListener('mouseout', (e) => {
                 e.stopPropagation();
-                if(e.target !== selectedEl) e.target.style.outline = "none";
+                e.target.classList.remove('editor-highlight');
             });
-
             canvas.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                selectElement(e.target);
+                if(e.target !== canvas) selectElement(e.target);
             });
         }
 
         function selectElement(el) {
-            // Remove previous highlight
-            if(selectedEl) selectedEl.style.outline = "none";
+            // Cleanup previous
+            if(selectedEl) selectedEl.classList.remove('editor-selected');
             
             selectedEl = el;
-            selectedEl.style.outline = "2px solid #d32f2f";
+            selectedEl.classList.add('editor-selected');
+            selectedEl.classList.remove('editor-highlight');
             
-            const panel = document.getElementById('properties-panel');
-            panel.classList.add('active');
+            // Show Panel
+            document.getElementById('properties-panel').classList.remove('translate-x-full');
             
             // Populate Fields
-            document.getElementById('el-tag').innerText = el.tagName;
-            
-            // Text
             document.getElementById('inp-text').value = el.innerText;
             
-            // Link
-            const linkGroup = document.getElementById('pg-link');
-            if(el.tagName === 'A' || el.closest('a')) {
-                linkGroup.style.display = 'block';
-                document.getElementById('inp-href').value = el.getAttribute('href') || '#';
-            } else {
-                linkGroup.style.display = 'none';
-            }
+            // Show/Hide Types
+            const isImg = el.tagName === 'IMG';
+            const isLink = el.tagName === 'A' || el.closest('a');
             
-            // Image
-            const imgGroup = document.getElementById('pg-img');
-            if(el.tagName === 'IMG') {
-                imgGroup.style.display = 'block';
-                document.getElementById('inp-src').value = el.src;
-                // Disable text editing for images
-                document.getElementById('pg-text').style.display = 'none';
-            } else {
-                imgGroup.style.display = 'none';
-                document.getElementById('pg-text').style.display = 'block';
-            }
+            document.getElementById('pg-img').classList.toggle('hidden', !isImg);
+            document.getElementById('pg-text').classList.toggle('hidden', isImg); // Don't edit text of img
+            document.getElementById('pg-link').classList.toggle('hidden', !isLink);
+
+            if(isImg) document.getElementById('inp-src').value = el.src;
+            if(isLink) document.getElementById('inp-href').value = el.getAttribute('href') || '#';
             
             // Styles
-            const style = window.getComputedStyle(el);
-            // RGB to Hex helper
+            const s = window.getComputedStyle(el);
             const rgbToHex = (rgb) => {
-                if(!rgb || rgb === 'rgba(0, 0, 0, 0)') return '#ffffff';
-                const rgbMatch = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-                if(!rgbMatch) return '#000000';
-                return "#" + ("0" + parseInt(rgbMatch[1],10).toString(16)).slice(-2) +
-                             ("0" + parseInt(rgbMatch[2],10).toString(16)).slice(-2) +
-                             ("0" + parseInt(rgbMatch[3],10).toString(16)).slice(-2);
+                const res = rgb.match(/\d+/g);
+                return res ? "#" + res.map(x => (+x).toString(16).padStart(2,'0')).join('') : '#000000';
             };
-
-            document.getElementById('inp-color').value = rgbToHex(style.color);
-            document.getElementById('inp-bg').value = rgbToHex(style.backgroundColor);
-            document.getElementById('inp-size').value = style.fontSize;
-            document.getElementById('inp-padding').value = style.padding;
-            document.getElementById('inp-margin').value = style.margin;
-            document.getElementById('inp-radius').value = style.borderRadius;
             
-            // Background Image extraction
-            let bgImg = style.backgroundImage;
-            if(bgImg && bgImg !== 'none') {
-                // Strip url("...") wrapper
-                bgImg = bgImg.replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
-                document.getElementById('inp-bg-img').value = bgImg;
-            } else {
-                document.getElementById('inp-bg-img').value = '';
-            }
+            document.getElementById('inp-color').value = rgbToHex(s.color);
+            document.getElementById('inp-bg').value = rgbToHex(s.backgroundColor);
+            document.getElementById('inp-size').value = s.fontSize;
+            document.getElementById('inp-padding').value = s.padding;
         }
 
-        // Expose to window for HTML oninput calls
+        window.deselectElement = function() {
+            if(selectedEl) selectedEl.classList.remove('editor-selected');
+            selectedEl = null;
+            document.getElementById('properties-panel').classList.add('translate-x-full');
+        }
+
         window.applyChange = function(type) {
             if(!selectedEl) return;
             
-            if(type === 'text') selectedEl.innerText = document.getElementById('inp-text').value;
-            if(type === 'href') selectedEl.setAttribute('href', document.getElementById('inp-href').value);
-            if(type === 'src') selectedEl.src = document.getElementById('inp-src').value;
+            const val = (id) => document.getElementById(id).value;
             
-            if(type === 'style-color') selectedEl.style.color = document.getElementById('inp-color').value;
-            if(type === 'style-bg') selectedEl.style.backgroundColor = document.getElementById('inp-bg').value;
-            if(type === 'style-size') selectedEl.style.fontSize = document.getElementById('inp-size').value;
-            if(type === 'style-padding') selectedEl.style.padding = document.getElementById('inp-padding').value;
-            if(type === 'style-margin') selectedEl.style.margin = document.getElementById('inp-margin').value;
-            if(type === 'style-radius') selectedEl.style.borderRadius = document.getElementById('inp-radius').value;
+            if(type === 'text') selectedEl.innerText = val('inp-text');
+            if(type === 'href') selectedEl.setAttribute('href', val('inp-href'));
+            if(type === 'src') selectedEl.src = val('inp-src');
             
-            if(type === 'style-bg-img') {
-                const url = document.getElementById('inp-bg-img').value;
-                selectedEl.style.backgroundImage = url ? `url('${url}')` : 'none';
-            }
+            if(type === 'style-color') selectedEl.style.color = val('inp-color');
+            if(type === 'style-bg') selectedEl.style.backgroundColor = val('inp-bg');
+            if(type === 'style-size') selectedEl.style.fontSize = val('inp-size');
+            if(type === 'style-padding') selectedEl.style.padding = val('inp-padding');
         }
 
         window.saveWebsiteChanges = async function() {
             const btn = document.querySelector('.save-btn');
+            const originalHTML = btn.innerHTML;
             btn.innerHTML = 'Saving...';
             
-            if(selectedEl) selectedEl.style.outline = "none";
+            // Remove editor classes before saving
+            if(selectedEl) selectedEl.classList.remove('editor-selected');
+            document.querySelectorAll('.editor-highlight').forEach(el => el.classList.remove('editor-highlight'));
             
-            const html = document.getElementById('editor-canvas').innerHTML;
+            const cleanHTML = document.getElementById('editor-canvas').innerHTML;
             
             try {
-                await setDoc(doc(db, "site_content", "live_page"), {
-                    html: html,
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'site_content', 'live_page'), {
+                    html: cleanHTML,
                     updatedAt: serverTimestamp()
                 });
-                alert("Published Successfully!");
+                alert("Published Successfully! The live site is updated.");
             } catch(e) {
-                alert("Error: " + e.message);
+                alert("Error saving: " + e.message);
             }
-            btn.innerHTML = '<i class="material-icons">cloud_upload</i> Publish Changes';
+            btn.innerHTML = originalHTML;
         }
-
     </script>
 </body>
 </html>
