@@ -14,22 +14,27 @@
     <style>
         /* --- 1. Variables & Global Reset --- */
         :root {
-            --primary-color: #e84f4f; /* Main Red */
+            --primary-color: #e84f4f; /* Main Red - Appetite Stimulating */
             --primary-hover: #d40101;
-            --secondary-color: #28b351; /* Green for Actions */
+            --secondary-color: #28b351; /* Green for Actions/Safety */
             --secondary-hover: #24a94b;
-            --dark-bg: #232232;
-            --light-bg: #f2f7fd;
+            --dark-bg: #1a1a1a; /* Darker for better contrast */
+            --light-bg: #f8f9fa;
             --text-main: #333333;
             --text-light: #ffffff;
             --font-heading: 'Merriweather', serif;
             --font-body: 'Open Sans', sans-serif;
-            --shadow-card: 0 4px 15px rgba(0,0,0,0.1);
+            --shadow-card: 0 10px 30px rgba(0,0,0,0.08); /* Softer, modern shadow */
             --transition-speed: 0.3s;
+            --gold-accent: #ffc107;
         }
 
         * {
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -38,11 +43,16 @@
             color: var(--text-main);
             line-height: 1.6;
             background-color: #fff;
+            padding-bottom: 60px; /* Space for mobile sticky bar */
+        }
+
+        @media (min-width: 768px) {
+            body { padding-bottom: 0; }
         }
 
         /* --- 2. Layout & Grid System --- */
         .gjs-ft-section {
-            padding: 40px 0;
+            padding: 60px 0; /* More breathing room */
             position: relative;
         }
 
@@ -56,7 +66,7 @@
         .gjs-ft-row {
             display: flex;
             flex-wrap: wrap;
-            margin: 0 -15px; /* Negative margin for gutter */
+            margin: 0 -15px;
         }
 
         .gjs-ft-column {
@@ -66,7 +76,6 @@
             justify-content: center;
         }
 
-        /* Helper for responsive images */
         .img-fluid {
             max-width: 100%;
             height: auto;
@@ -77,9 +86,9 @@
         /* --- 3. Typography --- */
         .ftheadline {
             font-family: var(--font-heading);
-            font-weight: 700;
+            font-weight: 900;
             margin-bottom: 15px;
-            line-height: 1.3;
+            line-height: 1.2;
             color: inherit;
         }
 
@@ -87,52 +96,75 @@
             font-family: var(--font-body);
             font-weight: 400;
             font-size: 1.25rem;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             opacity: 0.9;
         }
 
         .ftparagraph {
             font-family: var(--font-body);
             margin-bottom: 20px;
-            font-size: 1rem;
+            font-size: 1.05rem;
+            color: #555;
         }
 
         /* --- 4. Component Styles --- */
         
-        /* Buttons */
+        /* Buttons - Optimized for Clicks */
         .gjs-btn, .ft-form-btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
             background-color: var(--primary-color);
             color: #fff;
-            padding: 12px 30px;
-            border-radius: 5px;
+            padding: 14px 35px;
+            border-radius: 50px; /* Modern pill shape */
             text-decoration: none;
             font-weight: 700;
-            transition: background-color var(--transition-speed), transform 0.2s;
+            transition: all var(--transition-speed);
             border: none;
             cursor: pointer;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(232, 79, 79, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
         }
 
         .gjs-btn:hover, .ft-form-btn:hover {
             background-color: var(--primary-hover);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(232, 79, 79, 0.6);
             color: #fff;
-            text-decoration: none;
+        }
+
+        /* Pulse Animation for CTA */
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(232, 79, 79, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(232, 79, 79, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(232, 79, 79, 0); }
+        }
+
+        .cta-pulse {
+            animation: pulse-red 2s infinite;
         }
 
         .ffbtnsubtxt {
             display: block;
-            font-size: 0.85em;
+            font-size: 0.75em;
             font-weight: 400;
-            opacity: 0.9;
+            opacity: 0.95;
             margin-top: 2px;
+            text-transform: none;
+            background: rgba(0,0,0,0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
         }
 
         /* Specific Button Colors */
         #i06ebi { background-color: var(--primary-color); }
-        #iin5gl, #imqkpv, #iptcjo { background-color: var(--secondary-color); }
+        #iin5gl, #imqkpv, #iptcjo { background-color: var(--secondary-color); box-shadow: 0 4px 15px rgba(40, 179, 81, 0.4); }
         #iin5gl:hover, #imqkpv:hover, #iptcjo:hover { background-color: var(--secondary-hover); }
 
         /* Icons */
@@ -142,46 +174,65 @@
             padding: 8px;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        /* Cards/Boxes */
         .ft_com_box {
             text-align: center;
         }
         
-        /* Menu Item Cards */
+        /* Menu Item Cards - Optimized Layout */
         .menu-item-card {
             background: #fff;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 25px;
+            border-radius: 15px;
             box-shadow: var(--shadow-card);
             transition: transform var(--transition-speed);
             height: 100%;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
         }
         .menu-item-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+        }
+
+        .bestseller-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--gold-accent);
+            color: #000;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            z-index: 2;
         }
 
         /* --- 5. Section Specifics --- */
 
         /* Hero Section */
         #icdecp {
-            background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7)), url('https://img.flexifunnels.io/images/163/a2nzg_1920_banner.png');
+            background-image: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.75)), url('https://img.flexifunnels.io/images/163/a2nzg_1920_banner.png');
             background-size: cover;
             background-position: center;
-            padding: 80px 0;
+            padding: 100px 0 80px;
         }
 
         #icdecp .ftheadline {
-            font-size: 2.5rem;
-            color: #222;
+            font-size: 3rem;
+            color: #111;
             text-align: left;
+            margin-bottom: 20px;
         }
         
         #icdecp .ftsub_heading {
             text-align: left;
             color: #444;
+            font-size: 1.4rem;
         }
 
         /* Dark Sections */
@@ -190,30 +241,62 @@
             color: var(--text-light);
         }
         
-        #izlvmb .ftheadline, #ij94xi .ftheadline,
+        #izlvmb .ftheadline, #ij94xi .ftheadline {
+            color: var(--gold-accent); /* Gold text for premium feel on dark bg */
+            text-align: left;
+        }
+        
         #izlvmb .ftparagraph, #ij94xi .ftparagraph {
-            color: var(--text-light);
+            color: rgba(255,255,255,0.8);
             text-align: left;
         }
 
         #izlvmb .ftsub_heading, #ij94xi .ftsub_heading {
-            color: var(--primary-color);
+            color: #fff;
             text-align: left;
         }
 
         /* Footer / Form Section */
         #ib8r3j {
-            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://img.flexifunnels.io/images/163/cyntc_1920_bg.png');
+            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://img.flexifunnels.io/images/163/cyntc_1920_bg.png');
             background-size: cover;
             color: #fff;
+            padding: 80px 0;
         }
 
         #ihncul {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 10px;
-            padding: 30px;
+            background: #fff;
+            border-radius: 15px;
+            padding: 40px;
             color: #333;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            position: relative;
         }
+
+        /* Urgency Badge */
+        .urgency-badge {
+            background: #ffecb3;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .urgency-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #dc3545;
+            border-radius: 50%;
+            display: inline-block;
+            animation: blink 1.5s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0.4; } }
 
         /* Form Styling */
         .flexi-form {
@@ -221,58 +304,77 @@
         }
 
         .ft-input-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            position: relative;
         }
 
         .ft-form-ctl {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 15px 15px;
+            border: 1px solid #eee;
+            background: #f9f9f9;
+            border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
 
         .ft-form-ctl:focus {
             border-color: var(--secondary-color);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(40, 179, 81, 0.1);
             outline: none;
         }
 
-        /* Social Icons */
-        .ft-social {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
+        /* Mobile Sticky Action Bar */
+        .mobile-sticky-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 999;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+        }
+        
+        .mobile-sticky-btn {
+            flex: 1;
+            margin: 0 5px;
+            padding: 12px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
-            background: #fff;
-            color: #333;
-            margin: 0 5px;
-            font-size: 18px;
-            transition: 0.3s;
+            gap: 8px;
         }
-        .ft-social:hover {
-            color: #fff;
+
+        .ms-call { background: var(--secondary-color); color: #fff; }
+        .ms-book { background: var(--primary-color); color: #fff; }
+
+        @media (min-width: 768px) {
+            .mobile-sticky-bar { display: none; }
         }
-        .facebook-bg:hover { background: #3b5998; }
-        .twitter-bg:hover { background: #55acee; }
-        .linkedin-bg:hover { background: #0077b5; }
 
         /* --- 6. Modal Styles --- */
         .ff-modal-popup {
-            display: none; /* Hidden by default */
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.85); /* Darker overlay for focus */
+            z-index: 2000;
             justify-content: center;
             align-items: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
         .ff-modal-popup.show {
@@ -282,12 +384,13 @@
 
         .ff-modal-content {
             background: #fff;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 30px;
+            border-radius: 15px;
             width: 90%;
-            max-width: 500px;
+            max-width: 450px;
             position: relative;
             animation: slideDown 0.4s ease;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
         @keyframes slideDown {
@@ -297,65 +400,75 @@
 
         .ff-modal-pop-close {
             position: absolute;
-            top: 10px;
-            right: 15px;
+            top: 15px;
+            right: 20px;
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
-            color: #888;
+            color: #999;
+            transition: color 0.3s;
+        }
+        .ff-modal-pop-close:hover { color: #333; }
+
+        /* Social Icons */
+        .ft-social {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            margin: 0 5px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        .ft-social:hover {
+            background: #fff;
+            color: var(--primary-color);
+            transform: scale(1.1);
         }
 
         /* --- 7. Responsiveness --- */
-        /* Tablet & Desktop */
         @media (min-width: 768px) {
-            #imbges { flex-basis: 60%; } /* Hero Button area */
-            #id0hii { flex-basis: 40%; } /* Hero Phone area */
-            
-            #ib8ulr, #i2w8jj, #i0cdgs, #i5gii3 { flex-basis: 45%; } /* Image Side */
-            #i8wpxa, #isc06u, #ifgy5h, #i1luxf { flex-basis: 55%; } /* Text Side */
-
-            #it3l61 { flex: 2; } /* Hero Left */
-            #iu3fzi { flex: 1; } /* Hero Right */
-            
-            /* Reservation Form Split */
-            #ihncul { flex: 1.5; }
+            #imbges { flex-basis: 60%; }
+            #id0hii { flex-basis: 40%; }
+            #ib8ulr, #i2w8jj, #i0cdgs, #i5gii3 { flex-basis: 45%; }
+            #i8wpxa, #isc06u, #ifgy5h, #i1luxf { flex-basis: 55%; }
+            #it3l61 { flex: 1.8; padding-right: 40px; }
+            #iu3fzi { flex: 1.2; }
+            #ihncul { flex: 1.6; margin-right: 30px; }
             #inbacj { flex: 1; }
         }
 
-        /* Mobile */
         @media (max-width: 767px) {
-            .gjs-ft-column {
-                flex-basis: 100% !important; /* Force stack on mobile */
-                text-align: center;
-            }
-
-            .ftheadline {
-                font-size: 2rem !important;
-                text-align: center !important;
-            }
-
-            .ftsub_heading, .ftparagraph {
-                text-align: center !important;
-            }
-
-            /* Fix Hero Alignment */
-            #icdecp .ftheadline, #icdecp .ftsub_heading {
-                text-align: center;
-            }
-
-            #i06ebi {
-                width: 100%; /* Full width button */
-            }
-
-            /* Adjust Modal Width */
-            .flexi-form-flexiForm_FUD9l {
-                width: 100%;
-            }
+            .gjs-ft-column { flex-basis: 100% !important; text-align: center; }
+            .ftheadline { font-size: 2rem !important; text-align: center !important; }
+            .ftsub_heading, .ftparagraph { text-align: center !important; }
+            #icdecp .ftheadline, #icdecp .ftsub_heading { text-align: center; }
+            #i06ebi { width: 100%; margin-top: 15px; }
+            #icdecp { padding: 40px 0; }
+            .menu-item-card { margin-bottom: 20px; }
+            
+            /* Fix reverse flex for mobile visual flow */
+            #ij94xi .gjs-ft-row { flex-direction: column-reverse !important; }
+            #izlvmb .gjs-ft-row { flex-direction: column-reverse !important; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Sticky Mobile Action Bar -->
+    <div class="mobile-sticky-bar">
+        <a href="tel:001234567890" class="mobile-sticky-btn ms-call">
+            <i class="material-icons" style="font-size: 18px;">call</i> Call
+        </a>
+        <a href="javascript:void(0)" onclick="openModal()" class="mobile-sticky-btn ms-book">
+            <i class="material-icons" style="font-size: 18px;">restaurant_menu</i> Book Table
+        </a>
+    </div>
 
     <!-- Hero Section -->
     <section id="icdecp" class="gjs-ft-section">
@@ -364,21 +477,21 @@
                 <!-- Left Content -->
                 <div id="it3l61" class="gjs-ft-column">
                     <div class="ft_com_box" style="text-align: left;">
-                        <img src="https://img.flexifunnels.io/images/163/i5ntg_139_logo1.png" alt="Logo" class="img-fluid" style="max-height: 60px; margin: 0;"/>
+                        <img src="https://img.flexifunnels.io/images/163/i5ntg_139_logo1.png" alt="Logo" class="img-fluid" style="max-height: 70px; margin: 0;"/>
                     </div>
-                    <h1 class="ftheadline" style="margin-top: 20px;">Say Goodbye To Hunger. Experience Mouth-Watering Dishes</h1>
-                    <h2 class="ftsub_heading">Fresh ingredients, authentic taste, and delivered hot to your table.</h2>
+                    <h1 class="ftheadline" style="margin-top: 30px;">Say Goodbye To Hunger. <br/><span style="color: var(--primary-color);">Experience True Taste.</span></h1>
+                    <h2 class="ftsub_heading">Fresh ingredients, authentic family recipes, and delivered hot to your table. Rated #1 in the city.</h2>
                     
-                    <div class="gjs-ft-row" style="align-items: center;">
+                    <div class="gjs-ft-row" style="align-items: center; margin-top: 20px;">
                         <div id="imbges" class="gjs-ft-column">
-                            <a href="javascript:void(0)" onclick="openModal()" class="gjs-btn">
+                            <a href="javascript:void(0)" onclick="openModal()" class="gjs-btn cta-pulse" id="i06ebi">
                                 <span class="ffbtnmaintxt">Order Now</span>
-                                <span class="ffbtnsubtxt">Flat 25% Off</span>
+                                <span class="ffbtnsubtxt">Flat 25% Off Today</span>
                             </a>
                         </div>
                         <div id="id0hii" class="gjs-ft-column">
                             <h2 class="ftsub_heading" style="margin: 0; font-weight: 700;">
-                                Call Now <br/> <span style="color: var(--primary-color);">00 1234 567890</span>
+                                Call For VIP Booking <br/> <a href="tel:001234567890" style="color: var(--primary-color); text-decoration: none;">00 1234 567890</a>
                             </h2>
                         </div>
                     </div>
@@ -386,12 +499,13 @@
                 
                 <!-- Right Content (Image & Call) -->
                 <div id="iu3fzi" class="gjs-ft-column">
-                    <div class="gjs-ft-row" style="justify-content: flex-end; margin-bottom: 20px;">
+                    <div class="gjs-ft-row" style="justify-content: flex-end; margin-bottom: 20px; display: none;">
+                        <!-- Hidden on desktop to clean UI, relied on bottom/top contact -->
                         <a href="#" class="gjs-btn" style="background-color: var(--secondary-color); padding: 8px 20px;">
                             <i class="material-icons" style="vertical-align: middle; font-size: 18px;">call</i> CALL NOW
                         </a>
                     </div>
-                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/q5odg_564_image1.png" alt="Delicious Food" class="img-fluid"/>
+                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/q5odg_564_image1.png" alt="Delicious Food" class="img-fluid" style="filter: drop-shadow(0 15px 15px rgba(0,0,0,0.2)); transform: scale(1.05);"/>
                 </div>
             </div>
         </div>
@@ -402,26 +516,28 @@
         <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
             <div class="gjs-ft-row">
                 <div class="gjs-ft-column" style="text-align: center;">
-                    <h1 class="ftheadline">Taking Care Of Your Hunger For A Decade!</h1>
-                    <h2 class="ftsub_heading">We serve the best food in town, prepared by world-class chefs.</h2>
+                    <h1 class="ftheadline">Satisfying Cravings For Over A Decade!</h1>
+                    <h2 class="ftsub_heading" style="max-width: 700px; margin: 0 auto;">We don't just serve food; we serve memories. Prepared by world-class chefs using secret recipes.</h2>
                 </div>
             </div>
 
             <!-- Food Grid Row 1 -->
-            <div class="gjs-ft-row" style="margin-top: 30px;">
+            <div class="gjs-ft-row" style="margin-top: 50px;">
                 <!-- Item 1 -->
                 <div class="gjs-ft-column" style="flex: 1;">
                      <div class="menu-item-card">
-                        <img loading="lazy" src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" alt="Chicken Curry" class="img-fluid" style="height: 150px; object-fit: contain;"/>
-                        <h3 class="ftheadline" style="font-size: 24px; margin-top: 10px;">Chicken Curry</h3>
-                        <img src="https://img.flexifunnels.io/images/163/k2nzy_82_star.png" alt="5 Stars" class="img-fluid" style="height: 20px;"/>
+                        <span class="bestseller-badge">MUST TRY</span>
+                        <img loading="lazy" src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" alt="Chicken Curry" class="img-fluid" style="height: 160px; object-fit: contain; margin-bottom: 15px;"/>
+                        <h3 class="ftheadline" style="font-size: 22px; margin-top: 10px; margin-bottom: 5px;">Chicken Curry</h3>
+                        <img src="https://img.flexifunnels.io/images/163/k2nzy_82_star.png" alt="5 Stars" class="img-fluid" style="height: 18px; margin: 0 auto 15px 0;"/>
                         
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                        <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 15px;">
                             <div>
-                                <h4 style="margin:0; font-size: 24px; font-weight: 900;">$67</h4>
-                                <small>Tasty & Spicy</small>
+                                <h4 style="margin:0; font-size: 24px; font-weight: 900; color: var(--primary-color);">$67</h4>
                             </div>
-                            <i class="fa fa-shopping-cart ft-icon" style="color: #fff; background: var(--primary-color);"></i>
+                            <button onclick="openModal()" style="border: none; background: transparent; cursor: pointer;">
+                                <i class="fa fa-shopping-cart ft-icon" style="color: #fff; background: var(--primary-color);"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -429,16 +545,18 @@
                 <!-- Item 2 -->
                 <div class="gjs-ft-column" style="flex: 1;">
                     <div class="menu-item-card">
-                       <img loading="lazy" src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" alt="Chicken Curry" class="img-fluid" style="height: 150px; object-fit: contain;"/>
-                       <h3 class="ftheadline" style="font-size: 24px; margin-top: 10px;">Mutton Korma</h3>
-                       <img src="https://img.flexifunnels.io/images/163/k2nzy_82_star.png" alt="5 Stars" class="img-fluid" style="height: 20px;"/>
+                       <span class="bestseller-badge" style="background: var(--primary-color); color: #fff;">POPULAR</span>
+                       <img loading="lazy" src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" alt="Mutton Korma" class="img-fluid" style="height: 160px; object-fit: contain; margin-bottom: 15px;"/>
+                       <h3 class="ftheadline" style="font-size: 22px; margin-top: 10px; margin-bottom: 5px;">Mutton Korma</h3>
+                       <img src="https://img.flexifunnels.io/images/163/k2nzy_82_star.png" alt="5 Stars" class="img-fluid" style="height: 18px; margin: 0 auto 15px 0;"/>
                        
-                       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                       <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 15px;">
                            <div>
-                               <h4 style="margin:0; font-size: 24px; font-weight: 900;">$85</h4>
-                               <small>Rich Flavor</small>
+                               <h4 style="margin:0; font-size: 24px; font-weight: 900; color: var(--primary-color);">$85</h4>
                            </div>
-                           <i class="fa fa-shopping-cart ft-icon" style="color: #fff; background: var(--primary-color);"></i>
+                           <button onclick="openModal()" style="border: none; background: transparent; cursor: pointer;">
+                                <i class="fa fa-shopping-cart ft-icon" style="color: #fff; background: var(--primary-color);"></i>
+                            </button>
                        </div>
                    </div>
                </div>
@@ -446,16 +564,17 @@
                <!-- Item 3 -->
                <div class="gjs-ft-column" style="flex: 1;">
                     <div class="menu-item-card">
-                        <img loading="lazy" src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" alt="Chicken Curry" class="img-fluid" style="height: 150px; object-fit: contain;"/>
-                        <h3 class="ftheadline" style="font-size: 24px; margin-top: 10px;">Spicy Biryani</h3>
-                        <img src="https://img.flexifunnels.io/images/163/k2nzy_82_star.png" alt="5 Stars" class="img-fluid" style="height: 20px;"/>
+                        <img loading="lazy" src="https://img.flexifunnels.io/images/163/i2mjg_120_service1.png" alt="Spicy Biryani" class="img-fluid" style="height: 160px; object-fit: contain; margin-bottom: 15px;"/>
+                        <h3 class="ftheadline" style="font-size: 22px; margin-top: 10px; margin-bottom: 5px;">Spicy Biryani</h3>
+                        <img src="https://img.flexifunnels.io/images/163/k2nzy_82_star.png" alt="5 Stars" class="img-fluid" style="height: 18px; margin: 0 auto 15px 0;"/>
                         
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                        <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 15px;">
                             <div>
-                                <h4 style="margin:0; font-size: 24px; font-weight: 900;">$50</h4>
-                                <small>Best Seller</small>
+                                <h4 style="margin:0; font-size: 24px; font-weight: 900; color: var(--primary-color);">$50</h4>
                             </div>
-                            <i class="fa fa-shopping-cart ft-icon" style="color: #fff; background: var(--primary-color);"></i>
+                            <button onclick="openModal()" style="border: none; background: transparent; cursor: pointer;">
+                                <i class="fa fa-shopping-cart ft-icon" style="color: #fff; background: var(--primary-color);"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -468,13 +587,13 @@
         <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
             <div class="gjs-ft-row" style="align-items: center;">
                 <div id="ijq8bx" class="gjs-ft-column" style="flex-basis: 50%;">
-                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/e0nju_406_uczZVGkrbx406image2.png" alt="Best Seller Dish" class="img-fluid"/>
+                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/e0nju_406_uczZVGkrbx406image2.png" alt="Best Seller Dish" class="img-fluid" style="filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)); transform: rotate(-5deg);"/>
                 </div>
                 <div id="ionwls" class="gjs-ft-column" style="flex-basis: 50%;">
                     <h1 class="ftheadline">You Can't Miss This [BestSeller]</h1>
-                    <h2 class="ftsub_heading">The taste that brings you back.</h2>
+                    <h2 class="ftsub_heading" style="color: var(--primary-color);">The taste that brings you back.</h2>
                     <p class="ftparagraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. We use only the freshest ingredients sourced locally to ensure every bite is a delight.</p>
-                    <div style="margin-top: 20px;">
+                    <div style="margin-top: 30px;">
                         <a href="javascript:void(0)" onclick="openModal()" class="gjs-btn" style="border: 2px solid var(--primary-color); background: transparent; color: var(--primary-color);">
                             <span class="ffbtnmaintxt">Order Now & Get 25% Off</span>
                         </a>
@@ -487,19 +606,19 @@
     <!-- Dark Feature Section 2 -->
     <section id="ij94xi" class="gjs-ft-section">
         <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
-            <div class="gjs-ft-row" style="align-items: center; flex-direction: row-reverse;">
-                <div class="gjs-ft-column" style="flex-basis: 50%;">
-                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/qzmji_406_5b7YU2P8ZK406image3.png" alt="Special Dish" class="img-fluid"/>
-                </div>
+            <div class="gjs-ft-row" style="align-items: center;">
                 <div class="gjs-ft-column" style="flex-basis: 50%;">
                     <h1 class="ftheadline">Chef's Special Delight</h1>
-                    <h2 class="ftsub_heading">A culinary masterpiece.</h2>
+                    <h2 class="ftsub_heading" style="color: var(--primary-color);">A culinary masterpiece.</h2>
                     <p class="ftparagraph">Experince the fusion of spices and textures. This dish is curated specially by our head chef to give you an unforgettable experience.</p>
-                    <div style="margin-top: 20px;">
+                    <div style="margin-top: 30px;">
                         <a href="javascript:void(0)" onclick="openModal()" class="gjs-btn" style="border: 2px solid var(--primary-color); background: transparent; color: var(--primary-color);">
                             <span class="ffbtnmaintxt">Order Now & Get 25% Off</span>
                         </a>
                     </div>
+                </div>
+                <div class="gjs-ft-column" style="flex-basis: 50%;">
+                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/qzmji_406_5b7YU2P8ZK406image3.png" alt="Special Dish" class="img-fluid" style="filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)); transform: rotate(5deg);"/>
                 </div>
             </div>
         </div>
@@ -510,80 +629,87 @@
         <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
             <div class="gjs-ft-row">
                 <div class="gjs-ft-column" style="text-align: center;">
-                    <p class="ftparagraph" style="color: var(--secondary-color); font-weight: 700;">Served Over 100,000+ Dishes</p>
+                    <p class="ftparagraph" style="color: var(--secondary-color); font-weight: 700; letter-spacing: 1px;">SERVED OVER 100,000+ DISHES</p>
                     <h1 class="ftheadline">See What India's Top Chefs Say!</h1>
                 </div>
             </div>
-            <div class="gjs-ft-row" style="align-items: center; margin-top: 30px;">
+            <div class="gjs-ft-row" style="align-items: center; margin-top: 40px;">
                 <div class="gjs-ft-column" style="flex-basis: 50%;">
-                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/c1mdg_348_mXV1johh9f348image4.png" alt="Chef Image" class="img-fluid" style="max-width: 80%; border-radius: 10px;"/>
+                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/c1mdg_348_mXV1johh9f348image4.png" alt="Chef Image" class="img-fluid" style="max-width: 90%; border-radius: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.1);"/>
                 </div>
                 <div class="gjs-ft-column" style="flex-basis: 50%;">
-                    <img src="https://img.flexifunnels.io/images/163/kznda_41_mpw9cJ6oPI41coma.png" alt="Quote" class="img-fluid" style="width: 50px; margin: 0 0 20px 0;"/>
-                    <p class="ftparagraph" style="text-align: left; font-style: italic;">"Simply the best food I have tasted in a long time. The authenticity of the spices and the presentation is world-class. Highly recommended!"</p>
-                    <h3 class="ftheadline" style="font-size: 24px; margin-bottom: 5px; text-align: left;">Ranveer Brar</h3>
-                    <p style="color: #666;">Master Chef India</p>
+                    <img src="https://img.flexifunnels.io/images/163/kznda_41_mpw9cJ6oPI41coma.png" alt="Quote" class="img-fluid" style="width: 60px; margin: 0 0 30px 0; opacity: 0.3;"/>
+                    <p class="ftparagraph" style="text-align: left; font-style: italic; font-size: 1.2rem; color: #222;">"Simply the best food I have tasted in a long time. The authenticity of the spices and the presentation is world-class. Highly recommended!"</p>
+                    <div style="margin-top: 15px;">
+                        <h3 class="ftheadline" style="font-size: 24px; margin-bottom: 5px; text-align: left;">Ranveer Brar</h3>
+                        <p style="color: #666; font-weight: 600;">Master Chef India</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Map/Location Divider -->
-    <section class="gjs-ft-section" style="padding: 100px 0; background: url('https://img.flexifunnels.io/images/163/g4ode_1920_map.png') no-repeat center center/cover;">
+    <section class="gjs-ft-section" style="padding: 120px 0; background: url('https://img.flexifunnels.io/images/163/g4ode_1920_map.png') no-repeat center center/cover; background-attachment: fixed;">
         <!-- Visual Spacer -->
     </section>
 
     <!-- Reservation Form Section -->
     <section id="ib8r3j" class="gjs-ft-section">
         <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
-            <div class="gjs-ft-row">
+            <div class="gjs-ft-row" style="align-items: center;">
                 <!-- Form Box -->
                 <div id="ihncul" class="gjs-ft-column">
-                    <h1 class="ftheadline" style="color: var(--primary-color); text-align: center;">Experience Super Fast Table Reservations</h1>
+                    <div class="urgency-badge">
+                        <span class="urgency-dot"></span> Only 4 tables left for tonight!
+                    </div>
+                    <h1 class="ftheadline" style="color: var(--primary-color); text-align: center; font-size: 2rem;">VIP Table Reservation</h1>
+                    <p style="text-align: center; margin-bottom: 30px; color: #666;">Skip the waiting line. Book instantly.</p>
+                    
                     <form id="reservationForm" class="flexi-form">
                         <div class="ft-input-group">
                             <input type="text" name="first_name" placeholder="First Name" class="ft-form-ctl"/>
                         </div>
                         <div class="ft-input-group">
-                            <input type="email" name="email" placeholder="Email ID" required class="ft-form-ctl"/>
+                            <input type="email" name="email" placeholder="Email Address" required class="ft-form-ctl"/>
                         </div>
                         <div class="ft-input-group">
                             <input type="text" name="phone" placeholder="Phone Number" class="ft-form-ctl"/>
                         </div>
                         <div class="gjs-ft-row">
-                            <div class="gjs-ft-column" style="padding: 0 5px 0 0;">
+                            <div class="gjs-ft-column" style="padding: 0 10px 0 0;">
                                 <input type="date" name="Date" class="ft-form-ctl"/>
                             </div>
-                            <div class="gjs-ft-column" style="padding: 0 0 0 5px;">
+                            <div class="gjs-ft-column" style="padding: 0 0 0 10px;">
                                 <input type="time" name="Time" class="ft-form-ctl"/>
                             </div>
                         </div>
                         
-                        <div style="margin-top: 20px; text-align: center;">
-                            <button type="submit" class="ft-form-btn" style="width: 100%;">Make A Reservation</button>
+                        <div style="margin-top: 30px; text-align: center;">
+                            <button type="submit" class="ft-form-btn cta-pulse" style="width: 100%;">Confirm My Reservation</button>
                         </div>
                     </form>
-                    <div style="text-align: center; margin-top: 20px;">
-                         <a href="#" style="color: var(--text-main); font-weight: 600; text-decoration: none;">
-                            <i class="material-icons" style="vertical-align: middle; color: var(--secondary-color);">call</i> Call: 00 1234 567890
+                    <div style="text-align: center; margin-top: 25px;">
+                         <a href="tel:001234567890" style="color: #666; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                            <i class="material-icons" style="color: var(--secondary-color);">support_agent</i> Support: 00 1234 567890
                         </a>
                     </div>
                 </div>
 
                 <!-- Right Image -->
                 <div id="inbacj" class="gjs-ft-column" style="display: flex; align-items: center;">
-                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/ixnjm_569_image.png" alt="Food Delivery" class="img-fluid"/>
+                    <img loading="lazy" src="https://img.flexifunnels.io/images/163/ixnjm_569_image.png" alt="Food Delivery" class="img-fluid" style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));"/>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <section class="gjs-ft-section" style="background-color: var(--primary-color); padding: 20px 0;">
+    <section class="gjs-ft-section" style="background-color: var(--dark-bg); padding: 40px 0;">
         <div class="gjs-ft-wrapper gjs-ft-wrap-normal">
             <div class="gjs-ft-row" style="align-items: center; justify-content: space-between;">
                 <div class="gjs-ft-column" style="flex-basis: auto;">
-                    <p style="color: #fff; margin: 0; font-size: 14px;">© 2023 Restaurant. All Rights Reserved.</p>
+                    <p style="color: #999; margin: 0; font-size: 14px;">© 2023 Restaurant. All Rights Reserved. <br/>Designed for Great Taste.</p>
                 </div>
                 <div class="gjs-ft-column" style="flex-basis: auto;">
                     <div>
@@ -601,21 +727,21 @@
         <div class="ff-modal-content">
             <button class="ff-modal-pop-close" onclick="closeModal()">×</button>
             <div class="ff-modal-body" style="text-align: center;">
-                <h1 style="color: var(--secondary-color); font-family: var(--font-heading);">Book My Table</h1>
-                <p>Reserve your spot now and get exclusive offers!</p>
-                <form onsubmit="handleModalSubmit(event)" style="margin-top: 20px; text-align: left;">
+                <h1 style="color: var(--secondary-color); font-family: var(--font-heading); margin-bottom: 10px;">Quick Booking</h1>
+                <p style="margin-bottom: 25px;">Secure your table instantly.</p>
+                <form onsubmit="handleModalSubmit(event)" style="text-align: left;">
                     <div class="ft-input-group">
-                        <input type="text" placeholder="Name" required class="ft-form-ctl"/>
+                        <input type="text" placeholder="Full Name" required class="ft-form-ctl"/>
                     </div>
                     <div class="ft-input-group">
-                        <input type="email" placeholder="Email" required class="ft-form-ctl"/>
+                        <input type="email" placeholder="Email Address" required class="ft-form-ctl"/>
                     </div>
                     <div class="ft-input-group">
-                        <input type="text" placeholder="Phone" required class="ft-form-ctl"/>
+                        <input type="text" placeholder="Phone Number" required class="ft-form-ctl"/>
                     </div>
-                    <button type="submit" class="gjs-btn" style="width: 100%; background-color: var(--secondary-color);">Confirm Booking</button>
+                    <button type="submit" class="gjs-btn" style="width: 100%; background-color: var(--secondary-color); margin-top: 10px;">Complete Booking</button>
                 </form>
-                <p style="font-size: 12px; color: #888; margin-top: 10px;">We respect your privacy.</p>
+                <p style="font-size: 12px; color: #888; margin-top: 15px;"><i class="fa fa-lock"></i> Your information is secure.</p>
             </div>
         </div>
     </div>
@@ -643,13 +769,28 @@
         // Form Handling (Visual Only)
         function handleModalSubmit(e) {
             e.preventDefault();
-            alert("Thank you! Your table request has been received.");
-            closeModal();
+            // Simulate processing
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "Booking...";
+            
+            setTimeout(() => {
+                alert("Table Reserved! We will call you to confirm shortly.");
+                closeModal();
+                btn.innerText = originalText;
+            }, 1000);
         }
 
         document.getElementById('reservationForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert("Reservation submitted successfully!");
+            const btn = this.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "Processing...";
+            
+            setTimeout(() => {
+                alert("Reservation submitted successfully! See you soon.");
+                btn.innerText = originalText;
+            }, 1000);
         });
     </script>
 </body>
